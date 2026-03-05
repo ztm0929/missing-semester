@@ -1,6 +1,6 @@
 # Setup
-title: 'Missing Semester'
-url: https://missing.csail.mit.edu
+# title: 'Missing Semester'
+# url: https://missing.csail.mit.edu
 thumbnail: "/static/assets/thumbnails/default.png"
 
 # Settings
@@ -13,8 +13,8 @@ permalink: /:title/
 future: true
 # safe: true # breaks local rendering if enabled
 timezone: America/New_York
-analytics:
-  tracking_id: G-P7WVHD84D1
+# analytics:
+#   tracking_id: G-P7WVHD84D1
 
 collections:
   '2019':
