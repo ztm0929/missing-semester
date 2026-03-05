@@ -12,8 +12,12 @@ open an issue or submit a pull request.
 To build and view the site locally, run:
 
 ```bash
-bundle exec jekyll serve -w
+bundle exec jekyll serve -w --config _config.yml,_config.dev.yml
 ```
+
+If your production deployment uses a non-empty `baseurl` (for example
+`/missing-semester` on GitHub Pages project sites), this command keeps local
+preview working at the root path.
 
 If you'd prefer to develop the site in a Docker container (e.g., to avoid
 having to install Ruby and dependencies on your host machine), run:
