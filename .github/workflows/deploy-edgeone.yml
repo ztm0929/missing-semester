@@ -23,7 +23,7 @@ jobs:
       
       - name: Install EdgeOne CLI
         run: |
-          npm install -g @edgeone/cli
+          npm install -g edgeone
       
       - name: Deploy to EdgeOne
         env:
