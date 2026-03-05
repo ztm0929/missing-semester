@@ -1,0 +1,10 @@
+# EdgeOne Production Config
+# Overrides for cs.ac-wiki.cn deployment
+
+# Remove baseurl for top-level domain
+baseurl: ""
+
+# Set production URL
+url: https://cs.ac-wiki.cn
+
+# Keep all other settings from _config.yml

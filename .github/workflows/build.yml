@@ -1,28 +1,28 @@
-name: Build & Deploy
-on:
-  push:
-  pull_request:
-  schedule:
-    - cron: '0 8 * * 6'
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/checkout@v6
-      - uses: ruby/setup-ruby@v1
-        with:
-          ruby-version: "3.4"
-          bundler-cache: true
-      - run: bundle exec jekyll build
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: './_site'
-      - id: deployment
-        uses: actions/deploy-pages@v4
-        if: github.event_name == 'push' && github.ref == 'refs/heads/zh-cn'
+# name: Build & Deploy
+# on:
+#   push:
+#   pull_request:
+#   schedule:
+#     - cron: '0 8 * * 6'
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       pages: write
+#       id-token: write
+#     environment:
+#       name: github-pages
+#       url: ${{ steps.deployment.outputs.page_url }}
+#     steps:
+#       - uses: actions/checkout@v6
+#       - uses: ruby/setup-ruby@v1
+#         with:
+#           ruby-version: "3.4"
+#           bundler-cache: true
+#       - run: bundle exec jekyll build
+#       - uses: actions/upload-pages-artifact@v3
+#         with:
+#           path: './_site'
+#       - id: deployment
+#         uses: actions/deploy-pages@v4
+#         if: github.event_name == 'push' && github.ref == 'refs/heads/zh-cn'
