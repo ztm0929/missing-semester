@@ -21,16 +21,12 @@ jobs:
       - name: Build site for EdgeOne
         run: bundle exec jekyll build --config _config.yml,_config.edgeone.yml
       
-      - name: Install EdgeOne CLI
-        run: |
-          npm install -g edgeone
-      
       - name: Deploy to EdgeOne
         env:
           EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
         run: |
-          edgeone pages deploy _site/ \
-            -n missing-semester \
+          npx edgeone pages deploy _site/ \
+            -n missing-semester-upload \
             -t "$EDGEONE_API_TOKEN"
       
       - name: Deployment Summary
