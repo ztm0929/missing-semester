@@ -558,3 +558,13 @@ input[type=checkbox]:checked ~ .menu-label:after {
     content: "("attr(href)")"; font-family: monospace; margin: 0 .25em;
   }
 }
+
+kbd {
+  padding: 2px 6px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  background: #f5f5f5;
+  color: #222;
+  font-size: 0.9em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
