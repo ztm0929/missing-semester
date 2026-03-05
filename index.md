@@ -12,7 +12,7 @@ nositetitle: true
 
 当今软件工程领域正在经历剧变，AI 赋能和增强工具与工作流程的涌现推动了这一变革。当恰当运用并充分认识其局限时，这些工具往往能为计算机科学从业者带来显著收益，因此值得深入学习。由于 AI 是跨领域的关键赋能技术，本课程并未设立独立的 AI 讲座，而是在每场讲座中融入了最新的 AI 工具与技术。
 
-详细了解 [本课程的设计理念](/about/) 。
+详细了解 [本课程的设计理念]({{ '/about/' | relative_url }}) 。
 
 {% comment %}
 # Registration
@@ -117,5 +117,5 @@ MIT 官方注：以上为社区译本的外部链接，我们未对其进行审�
 <div class="small center">
 <p><a href="https://github.com/missing-semester/missing-semester">英文源码</a> | <a href="https://github.com/ztm0929/missing-semester">中文源码</a></p>
 <p>本站采用 CC BY-NC-SA 协议授权</p>
-<p>查看 <a href="/license/">贡献与翻译指南</a></p>
+<p>查看 <a href="{{ '/license/' | relative_url }}">贡献与翻译指南</a></p>
 </div>
