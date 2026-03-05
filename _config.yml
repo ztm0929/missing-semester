@@ -1,6 +1,8 @@
 # Setup
 # title: 'Missing Semester'
 # url: https://missing.csail.mit.edu
+# baseurl: 
+baseurl: /missing-semester
 thumbnail: "/static/assets/thumbnails/default.png"
 
 # Settings
