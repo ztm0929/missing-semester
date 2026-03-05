@@ -1,8 +1,7 @@
 ---
 layout: lecture
-title: "Course Overview + Introduction to the Shell"
-description: >
-  Learn about the motivation for this class, and get started with the shell.
+title: "课程概览 + Shell 入门"
+description: 了解本课程的背景与目标，并开始学习 Shell 的基础用法。
 thumbnail: /static/assets/thumbnails/2026/lec1.png
 date: 2026-01-12
 ready: true
@@ -11,126 +10,51 @@ video:
   id: MSgoeuMqUmU
 ---
 
-# Who are we?
+# 我们是谁？
 
-This class is co-taught by [Anish](https://anish.io/),
-[Jon](https://thesquareplanet.com/), and [Jose](http://josejg.com/). We
-are all ex-MIT students who started this MIT IAP class back when we were
-students. You can reach us collectively at
-[missing-semester@mit.edu](mailto:missing-semester@mit.edu).
+本课程由 [Anish](https://anish.io/)、[Jon](https://thesquareplanet.com/) 和 [Jose](http://josejg.com/) 联合讲授。我们都是 MIT 校友，在学生时代就创办了这门 MIT IAP 课程。如有任何问题，欢迎通过以下方式联系我们：<br>[missing-semester@mit.edu](mailto:missing-semester@mit.edu)
 
-We are not paid to teach this class, and do not monetize the class in
-any way. We make all the [course
-materials](https://missing.csail.mit.edu/) and [recordings of the
-lectures](https://www.youtube.com/@MissingSemester) freely available
-online. If you want to support our work, the best way to do so is to
-simply spread the word about the class. If you're a company, university,
-or other organization that runs this content past larger cohorts, please
-send us experience reports/testimonials by email so we get to hear about
-it :)
+我们不以此课程获得报酬，也不以任何方式将其商业化。我们将所有的 [课程资料](https://missing.csail.mit.edu/) 和 [讲座录像](https://www.youtube.com/@MissingSemester) 免费公开。如果你想支持我们的工作，最好的方式就是向他人推荐这门课程。如果你是公司、大学或其他组织，在更大范围内使用了本课程的内容，欢迎邮件告诉我们你的使用情况或提供反馈，我们很希望听到这些信息 :)
 
-# Motivation
+# 课程目的
 
-As computer scientists, we know that computers are great at aiding in
-repetitive tasks. However, far too often, we forget that this applies
-just as much to our _use_ of the computer as it does to the computations
-we want our programs to perform. We have a vast range of tools available
-at our fingertips that enable us to be more productive and solve more
-complex problems when working on any computer-related problem. Yet many
-of us utilize only a small fraction of those tools; we only know enough
-magical incantations by rote to get by, and blindly copy-paste commands
-from the internet when we get stuck.
+作为计算机科学家，我们都深知计算机擅长辅助完成重复性任务。然而，我们往往不经意间遗漏了一点：**这个优势不仅适用于程序执行的计算过程，对我们使用计算机本身也同样适用**。我们掌握着大量功能强大的工具，这些工具能显著提升我们的工作效率、帮助解决更复杂的问题。可惜的是，许多人仅仅利用了这些工具的冰山一角；我们往往只是死记硬背几句「魔法咒语」来应付日常工作，一旦陷入困境就盲目地从网上复制粘贴命令。
 
-This class is an attempt to [address this](/about/).
+本课程致力于 [解决这个问题]({{ '/about/' | relative_url }}) 。
 
-We want to teach you how to make the most of the tools you know, show
-you new tools to add to your toolbox, and hopefully instill in you some
-excitement for exploring (and perhaps building) more tools on your own.
-This is what we believe to be the missing semester from most Computer
-Science curricula.
+我们想教你如何充分利用已知的工具，为你介绍新的工具来扩充你的工具箱，并激发你对探索（乃至自己开发）更多工具的热情。这正是我们所认为的大多数计算机科学课程中所缺失的内容。
 
-# Class structure
+# 课程结构
 
-The not-for-credit class consists of nine 1-hour lectures, each one
-centering on a [particular topic](/2026/). The lectures are largely
-independent, though as the semester goes on we will presume that you are
-familiar with the content from the earlier lectures. We have lecture
-notes online, but there may be content covered in class (e.g. in the
-form of demos) that may not be in the notes. As for past years, we will
-be recording lectures and posting the recordings
-[online](https://www.youtube.com/@MissingSemester).
+本课程是一门免学分（费用）课程，包含九场 1 小时的讲座，每场讲座围绕一个 [特定主题]({{ '/2026/' | relative_url }}) 展开。这些讲座在很大程度上彼此独立，但随着学期进行，我们会假设你已经熟悉前面讲座的内容。我们提供在线讲义，但课堂上可能会涵盖讲义中没有的内容（如演示等）。与往年一样，我们会录制讲座并将录音录像 [在线发布](https://www.youtube.com/@MissingSemester) 。
 
-We are trying to cover a lot of ground over the course of just a few
-1-hour lectures, so the lectures are fairly dense. To allow you some
-time to get familiar with the content at your own pace, each lecture
-includes a set of exercises that guide you through the lecture's key
-points. We will not be running dedicated office hours, but we encourage
-you to ask questions on the [OSSU Discord](https://ossu.dev/#community),
-in `#missing-semester-forum`, or email us at
-[missing-semester@mit.edu](mailto:missing-semester@mit.edu).
+考虑到仅用几场 1 小时讲座要涵盖大量内容，这些讲座的信息量相当大。为了让你有时间按自己的节奏熟悉内容，每场讲座都附带一组习题，指导你学习讲座的核心知识点。我们不设专门的答疑时间，但欢迎你在 [OSSU Discord](https://ossu.dev/#community) 的 `#missing-semester-forum` 频道或通过邮件 [missing-semester@mit.edu](mailto:missing-semester@mit.edu) 向我们提问。
 
-Due to the limited time we have, we won't be able to cover all the tools
-in the same level of detail a full-scale class might. Where possible, we
-will try to point you towards resources for digging further into a tool
-or topic, but if something particularly strikes your fancy, don't
-hesitate to reach out to us and ask for pointers!
+由于时间有限，我们无法以全日制课程的详细程度涵盖所有工具。在可能的情况下，我们会为你指引资源来进一步探讨某个工具或话题；如果有什么特别引起你兴趣的，欢迎随时联系我们咨询！
 
-Finally, if you have feedback about the class, please send it to us by
-email at [missing-semester@mit.edu](mailto:missing-semester@mit.edu).
+最后，如果你对课程有任何反馈，欢迎邮件告诉我们：<br>[missing-semester@mit.edu](mailto:missing-semester@mit.edu)
 
-# Topic 1: The Shell
+# 主题一：Shell
 
 {% comment %}
 lecturer: Jon
 {% endcomment %}
 
-## What is the shell?
+## Shell 是什么？
 
-Computers these days have a variety of interfaces for giving them
-commands; fanciful graphical user interfaces, voice interfaces, AR/VR,
-and more recently: LLMs. These are great for 80% of use-cases, but they
-are often fundamentally restricted in what they allow you to do — you
-cannot press a button that isn't there or give a voice command that
-hasn't been programmed. To take full advantage of the tools your
-computer provides, we have to go old-school and drop down to a textual
-interface: The Shell.
+如今的计算机拥有多种多样的界面来接收命令：华丽的图形用户界面、语音输入接口、AR/VR，以及近来出现的大语言模型。这些交互接口在 80% 的使用场景中都表现出色，但它们往往在根本上受到限制——你无法点击一个不存在的按钮，也无法下达一条未被编程的语音命令。要充分利用计算机提供的所有工具，我们必须「复古」一下，使用一个古老而强大的文本界面：Shell 。
 
-Nearly all platforms you can get your hands on have a shell in one form
-or another, and many of them have several shells for you to choose from.
-While they may vary in the details, at their core they are all roughly
-the same: they allow you to run programs, give them input, and inspect
-their output in a semi-structured way.
+几乎所有你能接触到的平台都以某种形式提供了 Shell，其中许多还提供了多个 Shell 供你选择。尽管各 Shell 在细节上各不相同，但在本质上它们都大同小异：它们都允许你运行程序、向程序提供输入，并以半结构化的方式检查程序的输出。
 
-To open a shell _prompt_ (where you can type commands), you first need a
-_terminal_, which is the visual interface to a shell. Your device
-probably shipped with one installed, or you can install one fairly
-easily:
+要打开 Shell 的**提示符**（即你可以输入命令的地方），首先需要一个**终端**——它是与 Shell 交互的可视化界面。你的设备很可能已预装了终端，如果没有预装，你也可以安装一个：
 
-- **Linux:**
-  Press `Ctrl + Alt + T` (works on most distributions). Or search for
-  "Terminal" in your applications menu.
-- **Windows:**
-  Press `Win + R`, type `cmd` or `powershell`, and press Enter.
-  Alternatively, search "Terminal" or "Command Prompt" in the Start menu.
-- **macOS:**
-  Press `Cmd + Space` to open Spotlight, type "Terminal", and press Enter.
-  Or find it in Applications → Utilities → Terminal.
+- **Linux：**按下 <kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>T</kbd>（适用于大多数发行版），或者在应用菜单中搜索「终端（Terminal）」。
+- **Windows：**按下 <kbd>Win</kbd> + <kbd>R</kbd> ，输入 `cmd` 或 `powershell` ，然后按下 <kbd>Enter</kbd> 。也可以在开始菜单中搜索「终端（Terminal）」或「命令提示符（Command Prompt）」。
+- **macOS：**按下 <kbd>⌘ Cmd</kbd> + <kbd>Space</kbd> 打开 「聚焦（Spotlight）」，输入「终端（Terminal）」，然后按下 <kbd>Enter</kbd> 。还可以在「应用程序」→「实用工具」→「终端」中找到它。
 
-On Linux and macOS, this will usually open the Bourne Again SHell, or
-"bash" for short. This is one of the most widely used shells, and its
-syntax is similar to what you will see in many other shells. On Windows,
-you'll be greeted by the "batch" or "powershell" shells, depending on
-which command you ran. These are Windows-specific, and not what we'll be
-focusing on in this class, although it has analogues for most of what
-we'll be teaching. You'll instead want the [Windows Subsystem for
-Linux](https://docs.microsoft.com/en-us/windows/wsl/) or a Linux virtual
-machine.
+在 Linux 和 macOS 上，这通常会打开 Bourne Again Shell，简称「bash」。它是应用最广泛的 Shell 之一，其语法与你在其他许多 Shell 中看到的类似。在 Windows 上，你可能会看到「批处理（batch）」或「powershell」Shell，具体取决于你运行的命令。这些都是 Windows 特有的，我们在本课程中不会重点关注，尽管它们对我们要教授的大多数内容都有对应实现。你可以考虑使用 [适用于 Linux 的 Windows 子系统（WSL）](https://learn.microsoft.com/zh-cn/windows/wsl/) 或 Linux 虚拟机。
 
-Other shells exist, often with many ergonomic improvements over bash
-(fish and zsh are among the most common). While these are very popular
-(all the instructors use one), they're nowhere near as ubiquitous as
-bash, and lean on many of the same concepts, so we won't be focusing on
-those in this lecture.
+还有其他一些 Shell ，它们在使用体验上相较于 bash 做了许多改进（例如 fish 和 zsh 是最常见的）。虽然这些 Shell 非常流行（所有授课教师都在使用其中之一），但它们的普及程度远不及 bash，而且它们依赖的许多概念也与 bash 相同，因此本讲不会重点介绍这些 Shell 。
 
 ## Why should you care about it?
 
