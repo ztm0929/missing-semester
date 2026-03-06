@@ -13,7 +13,6 @@
 
   var sidenoteIndex = 1;
   var sidenoteData = [];
-  var positionedAtDesktopWidth = false;
 
   function transformToEpigraph(blockquote) {
     var html = blockquote.innerHTML.trim();
@@ -114,28 +113,35 @@
 
   // Position sidenotes vertically (only needed for desktop, CSS handles visibility)
   function positionSidenotes() {
-    // Already positioned successfully, or not at desktop width (refs hidden)
-    if (positionedAtDesktopWidth) return;
-    if (sidenoteData.length === 0 || sidenoteData[0].ref.offsetWidth === 0) return;
+    if (sidenoteData.length === 0) return;
 
-    var contentRect = content.getBoundingClientRect();
+    // On mobile, refs are hidden. Clear inline styles so desktop can recompute cleanly.
+    if (sidenoteData[0].ref.offsetWidth === 0) {
+      sidenoteData.forEach(function(item) {
+        item.sidenote.style.top = '';
+      });
+      return;
+    }
+
     var lastBottom = 0;
 
     sidenoteData.forEach(function(item) {
-      var refRect = item.ref.getBoundingClientRect();
-      var desiredTop = refRect.top - contentRect.top;
+      var desiredTop = item.ref.offsetTop;
       var actualTop = Math.max(desiredTop, lastBottom + 10);
       item.sidenote.style.top = actualTop + 'px';
       lastBottom = actualTop + item.sidenote.offsetHeight;
     });
-
-    positionedAtDesktopWidth = true;
   }
 
   // Position after DOM is ready and after images load
   positionSidenotes();
   window.addEventListener('load', positionSidenotes);
   window.addEventListener('resize', positionSidenotes);
+
+  // Font loading can shift line breaks and block heights, especially on CJK pages.
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(positionSidenotes);
+  }
 
   document.querySelectorAll('img').forEach(function(img) {
     if (!img.complete) {
