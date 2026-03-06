@@ -56,35 +56,22 @@ lecturer: Jon
 
 还有其他一些 Shell ，它们在使用体验上相较于 bash 做了许多改进（例如 fish 和 zsh 是最常见的）。虽然这些 Shell 非常流行（所有授课教师都在使用其中之一），但它们的普及程度远不及 bash，而且它们依赖的许多概念也与 bash 相同，因此本讲不会重点介绍这些 Shell 。
 
-## Why should you care about it?
+## 为什么你要关心 Shell ？
 
-The shell is not just (usually) much faster than "clicking around", it
-also comes with expressive power you can't easily find in any one
-graphical program. As we'll see, the shell gives you the ability to
-_combine_ programs in creative ways to automate nearly any task.
+Shell 的优点不只是比「点来点去」快得多，还具备一种在任何单一图形化程序中都难以获得的表达能力。正如我们将要看到的，Shell 让你能够**以富有创造性的方式把不同程序组合起来**，从而自动化几乎任何任务。
 
-Knowing your way around a shell is also very useful to navigate the
-world of open-source software (which often come with install
-instructions that require the shell), building continuous integration
-for your software projects (as described in the [Code Quality
-lecture](/2026/code-quality/)), and debugging errors when other programs
-fail.
+熟悉 Shell 还非常有助于你在开源软件世界中畅行无阻（许多安装说明都需要用到 Shell）、为你的软件项目搭建持续集成（如 [代码质量]({{ '/2026/code-quality' | relative_url }}) 一讲所述），以及在其他程序出错时进行排障。
 
-## Navigating in the shell
+## 在 Shell 中导航
 
-When you launch your terminal, you will see a _prompt_ that often looks
-a little like this:
+当你打开终端时，会看到一个通常长这样子的**提示符**：
 
 ```console
 missing:~$
 ```
 
-This is the main textual interface to the shell. It tells you that you
-are on the machine `missing` and that your "current working directory",
-or where you currently are, is `~` (short for "home"). The `$` tells you
-that you are not the root user (more on that later). At this prompt you
-can type a _command_, which will then be interpreted by the shell. The
-most basic command is to execute a program:
+这是 Shell 的主要文本交互界面。它告诉你：你当前在名为 `missing` 的机器上，你的「当前工作目录」（也就是你现在所在的位置）是 `~` ，它是「home 目录」的简写，在 Linux 上通常对应 `/home/用户名`（例如 `/home/jon` ）。<br>
+`$` 表示你当前不是 root 用户（后面会详细讲）。在这个提示符后，你可以输入一条命令，Shell 会对其进行解释并执行。最基本的命令就是运行一个程序：
 
 ```console
 missing:~$ date
@@ -92,43 +79,26 @@ Fri 10 Jan 2020 11:49:31 AM EST
 missing:~$
 ```
 
-Here, we executed the `date` program, which (perhaps unsurprisingly)
-prints the current date and time. The shell then asks us for another
-command to execute. We can also execute a command with _arguments_:
+这里我们执行了 `date` 程序，它会（不出所料地）打印当前日期和时间。随后 Shell 会等待我们输入下一条命令。<br>
+我们也可以带上**参数（_argument_）**来执行命令：
 
 ```console
 missing:~$ echo hello
 hello
 ```
 
-In this case, we told the shell to execute the program `echo` with the
-argument `hello`. The `echo` program simply prints out its arguments.
-The shell parses the command by splitting it by whitespace, and then
-runs the program indicated by the first word, supplying each subsequent
-word as an argument that the program can access. If you want to provide
-an argument that contains spaces or other special characters (e.g., a
-directory named "My Photos"), you can either quote the argument with `'`
-or `"` (`"My Photos"`), or escape just the relevant characters with `\`
-(`My\ Photos`).
+在这个例子中，我们让 Shell 执行 `echo` 程序，并传入参数 `hello` 。`echo` 程序的作用很简单：它会把收到的参数原样打印出来。Shell 在解析这条命令时，会先按照空白字符（whitespace，如空格、Tab 等）把整条命令拆分成若干部分，然后把第一个单词当作要执行的程序，其后的每一个单词都会作为参数传递给这个程序，程序可以在运行时读取这些参数。<br>
+如果你想传递的参数本身包含空格或其他特殊字符（例如一个名为「My Photos」的目录），可以用两种方式处理：
 
-Perhaps the most important command when you're starting out is `man`,
-short for "manual". The `man` program, among other things, lets you look
-up more information about any command on your system. For example, if
-you run `man date`, it'll explain what `date` is, and all of the various
-arguments you can pass it to alter its behavior. You can also usually
-get a short version of the help by passing `--help` as an argument to
-most commands.
+- 用 `'` 或 `"` 把整个参数括起来，例如 `"My Photos"`
+- 只对需要的字符进行转义，用反斜杠 `\`，例如 `My\ Photos`
 
-> Consider installing and using [`tldr`](https://tldr.sh/) in addition
-> to `man`, as it shows you common usage examples right there in the
-> terminal. LLMs are also usually very good at explaining how commands
-> work and how you can call them to achieve what you want to accomplish.
+对于初学者最重要的一条命令也许是 `man`，即 「manual（手册）」的缩写。
+`man` 命令有很多用途，其中之一是帮你查询系统中任意命令的详细说明。比如运行 `man date`，它会告诉你 `date` 是什么，以及你可以传入哪些参数来改变它的行为。对大多数命令来说，你通常也可以通过加上 `--help` 参数来查看更简短的帮助信息。
 
-After `man`, the most important command to learn is `cd`, or "change
-directory". This command is actually built into the shell, and isn't a
-separate program (i.e., `which cd` will say "no cd found"). You pass it
-a path, and that path becomes your current working directory. You'll
-also see the working directory reflected in the shell prompt:
+> 除了 `man` 之外，我们也推荐安装 [`tldr`](https://tldr.sh/) ：它会直接在终端里给出常见的命令使用示例，非常方便。此外，大语言模型通常也很擅长解释命令的工作原理，以及应该如何调用命令来实现你想完成的任务。
+
+学会 `man` 之后，下一个最重要的命令是 `cd`（change directory，切换目录）。这个命令实际上是 Shell 的内建命令，而不是独立程序（也就是说，输入 `which cd` 会显示 `no cd found`）。你给它传入一个路径，该路径就会成为你当前的工作目录。你也会在 Shell 提示符中看到当前工作目录随之变化。
 
 ```console
 missing:~$ cd /bin
@@ -137,23 +107,12 @@ missing:/$ cd ~
 missing:~$
 ```
 
-> Note that the shell comes with auto-completion, so you can often
-> complete paths faster by pressing `<TAB>`!
+> 需要注意的是，Shell 通常自带自动补全功能，所以按下 <kbd>Tab</kbd> 往往能更快地补全路径。
 
-A lot of commands operate on the current working directory if nothing
-else is specified. If you're ever unsure where you are, you can run
-`pwd` or print the `$PWD` environment variable (with `echo $PWD`), both
-of which produce the current working directory.
+许多命令在没有指定路径时，默认会作用于当前工作目录。如果你不确定自己现在位于哪个目录，可以运行 `pwd`（print working directory 的意思，即「打印当前工作目录」），或者查看 `$PWD` 环境变量（例如运行 `echo $PWD`）。这两种方式都会输出当前工作目录的路径。
 
-The current working directory also comes in handy in that it allows us to
-use _relative_ paths. All the paths we've seen so far have been
-_absolute_ --- they start with `/` and give the full set of directories
-needed to navigate to some location from the root of the file system
-(`/`). In practice, you'll more commonly work with relative paths; so
-called because they are relative to the current working directory. In a
-relative path (anything _not_ starting with `/`), the first path
-component is looked up in the current working directory, and subsequent
-components traverse as usual. For example:
+当前工作目录的另一个重要作用，是让我们能够使用**相对路径**。到目前为止我们看到的路径都是**绝对路径**：它们以 `/` 开头，给出了从文件系统根目录（ `/` ）到目标位置所需经过的完整目录路径。
+在实际使用中，你会更常接触到相对路径。之所以称为「相对」，是因为它们是相对于当前工作目录来解释的。对于相对路径（也就是**任何不以 `/` 开头的路径**），Shell 会先在当前工作目录中查找路径的第一个部分，然后再像平常一样逐级向下查找。例如：
 
 ```console
 missing:~$ cd /
@@ -161,9 +120,8 @@ missing:/$ cd bin
 missing:/bin$
 ```
 
-There are also two "special" components that exist in every directory:
-`.` and `..`. `.` is "this directory", and `..` is "the parent
-directory". So:
+每个目录里还都有两个「特殊路径」：`.` 和 `..` 。
+其中，`.` 表示「当前目录」，`..` 表示「父目录」。例如：
 
 ```console
 missing:~$ cd /
@@ -171,21 +129,13 @@ missing:/$ cd bin/../bin/../bin/././../bin/..
 missing:/$
 ```
 
-You can usually use absolute and relative paths interchangeably for any
-command argument, just keep in mind what your current working directory
-is when using a relative one!
+对于大多数命令参数来说，绝对路径和相对路径通常可以互换使用；只是在使用相对路径时，一定要时刻清楚你当前所在的工作目录！
 
-> Consider installing and using
-> [`zoxide`](https://github.com/ajeetdsouza/zoxide) to speed up your
-> `cd`ing --- `z` will remember the paths you frequently visit and let
-> you access with less typing.
+> 我们建议安装并使用 [`zoxide`](https://github.com/ajeetdsouza/zoxide) 来加速 `cd` 操作。它提供的 `z` 命令会记住你经常访问的路径，让你用更少的输入实现快速跳转。
 
-## What is available in the shell?
+## Shell 中有哪些可用的程序？
 
-But how does the shell know how to find programs like `date` or `echo`?
-If the shell is asked to execute a command, it consults an _environment
-variable_ called `$PATH` that lists which directories the shell should
-search for programs when it is given a command:
+但 Shell 是怎么知道去哪里找 `date` 或 `echo` 这样的程序呢？当 Shell 需要执行一条命令时，它会查询一个名为 `$PATH` 的环境变量。这个变量列出了一系列目录，Shell 会在这些目录中搜索与命令名称匹配的程序：
 
 ```console
 missing:~$ echo $PATH
@@ -196,122 +146,95 @@ missing:~$ /bin/echo $PATH
 /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 ```
 
-When we run the `echo` command, the shell sees that it should execute
-the program `echo`, and then searches through the `:`-separated list of
-directories in `$PATH` for a file by that name. When it finds it, it
-runs it (assuming the file is _executable_; more on that later). We can
-find out which file is executed for a given program name using the
-`which` program. We can also bypass `$PATH` entirely by giving the
-_path_ to the file we want to execute.
+当我们运行 `echo` 命令时，Shell 会识别出需要执行名为 `echo` 的程序，然后在 `$PATH` 中以冒号（`:`）分隔的目录列表里逐个搜索同名文件。一旦找到，就会运行它（**前提是该文件是可执行的**，关于这点稍后会详细说明）。<br>
+我们可以用 `which` 程序来查看某个命令实际对应哪个文件。我们也可以完全绕过 `$PATH` ，**直接给出要执行文件的完整路径**。
 
-This also gives a clue for how we can determine _all_ the programs we're
-able to execute in the shell: by listing the contents of all the
-directories on `$PATH`. We can do this by passing a given directory path
-to the `ls` program, which lists files:
+这也揭示了一个办法：我们可以通过列出 `$PATH` 中所有目录的内容，来确定 Shell 中有哪些程序可供执行。我们可以把目录路径传给 `ls` 程序来实现（程序名称取自「list」，用于列出文件）：
 
 ```console
 missing:~$ ls /bin
 ```
 
-> Consider installing and using [`eza`](https://eza.rocks/) for a more
-> human-friendly `ls`.
+> 我们建议安装并使用 [`eza`](https://eza.rocks/)，它是一个更加现代友好的工具，用于替代 `ls` 。
 
-This will, on most computers, print a _lot_ of programs, but we'll only
-focus on some of the most important ones here. First, some simple ones:
+在大多数计算机上，这会**打印出非常多的程序**，但我们这里只关注其中最重要的几个。先从一些简单的开始：
 
-- `cat file`, which prints the contents of `file`.
-- `sort file`, which prints out the lines of `file` in sorted order.
-- `uniq file`, which eliminates consecutive duplicate lines from `file`.
-- `head file` and `tail file`, which respectively print the first and
-  last few lines of `file`.
+- `cat hello.txt`：打印 `hello.txt` 的全部内容
+- `sort hello.txt`：将 `hello.txt` 的各行按字典序排序后输出
+- `uniq hello.txt`：去除 `hello.txt` 中连续重复的行
+- `head hello.txt` 和 `tail hello.txt`：分别打印 `hello.txt` 的前几行和后几行
 
-> Consider installing and using [`bat`](https://github.com/sharkdp/bat)
-> over `cat` for syntax highlighting and scrolling.
+> 我们建议安装并使用 [`bat`](https://github.com/sharkdp/bat) 来替代 `cat`，它支持语法高亮和分页滚动。
 
-There's also `grep pattern file`, which finds lines matching `pattern`
-in `file`. This one deserves slightly more attention as it's both _very_
-useful and sports a wider array of features than one may expect.
-`pattern` is actually a _regular expression_ which can express very
-complex patterns --- we'll [cover
-those](/2026/code-quality/#regular-expressions)
-in the code quality lecture. You can also specify a directory instead of a
-file (or leave it off for `.`) and pass `-r` to recursively search all
-the files in a directory.
+还有一个命令是 `grep pattern hello.txt`，它会在指定的文本文件(即 `hello.txt` )中查找所有匹配 `pattern` 的行。这个命令非常实用，值得多花点时间了解，它的功能比你想象的要丰富得多。
 
-> Consider installing and using
-> [`ripgrep`](https://github.com/BurntSushi/ripgrep) over `grep` for a
-> faster and more human-friendly (but less portable) alternative.
-> `ripgrep` will also recursively search the current working directory
-> by default!
+这里的 `pattern` 实际上是**正则表达式（regular expression）**，可以描述非常复杂的匹配模式——我们会在「代码质量」一讲中 [详细讲解]({{ '/2026/code-quality/#regular-expressions' | relative_url}}) 。
 
-There are also some very useful tools with a slightly more complicated
-interface. First among those is `sed`, which is a programmatic file
-editor. It has its own programming language for making automated edits
-to files, but the most common use of it is:
+除了指定单个文件，你也可以指定一个目录作为搜索范围（或者直接不写，默认就是当前目录 `.` ），并加上 `-r` 参数让 `grep` 递归搜索目录里的所有文本文件，输出匹配的行。
+
+> 如果想要更快、更好用的体验，可以考虑安装 [`ripgrep`](https://github.com/BurntSushi/ripgrep) 来替代 `grep` 。它默认就会递归搜索当前工作目录里的文本文件，使用起来更直观，但可移植性稍弱一些。
+
+还有一些非常实用的工具，它们的使用方式可能稍微复杂一些。我们先来看看 `sed` ——一个可编程的文件编辑器。它有自己的「小语言」，可以用来自动化修改文件。最常见的用法是：
 
 ```console
-missing:~$ sed -i 's/pattern/replacement/g' file
+missing:~$ sed -i 's/pattern/replacement/g' hello.txt
 ```
 
-This replaces all instances of `pattern` with `replacement` in `file`.
-The `-i` indicates that we want the substitutions to happen inline (as
-opposed to leaving `file` unmodified and printing the substituted
-contents). The `s/` is the way to express in the sed programming
-language that we want to do a substitution. The `/` separates the
-pattern from the replacement. And the trailing `/g` indicates that we
-want to replace _all_ occurrences on each line rather than just the
-first. As with `grep`, `pattern` here is a regular expression, which
-gives you significant expressive power. Regular expression substitutions
-also allow `replacement` to refer back to parts of the matched pattern;
-we'll see an example of that in a second.
+这条命令会把 `hello.txt` 中所有的 `pattern` 替换为 `replacement` 。具体来说：
+- `-i` 参数表示直接修改文件（inline），而不是只在终端输出替换后的内容
+- `s/` 是 `sed` 语法里表示「替换」的意思
+- 两个 `/` 用来分隔「匹配模式」和「替换内容」
+- 结尾的 `/g` 表示在每一行中**替换所有匹配项**，而不仅仅是第一个
 
-Next, we have `find`, which lets you find files (recursively) that match
-certain conditions. For example:
+> 译者注：<br> 
+> `sed` 是 stream editor（流编辑器） 的缩写，最早设计用来对输入流中的文本进行自动化处理，而不仅仅是单个文件。<br>
+> `s/` 为什么表示替换：在 `sed` 的命令语法里，`s` 就是 substitute（替换） 的首字母，表示「把匹配到的内容替换成其他内容」。<br>
+> `/g` 为什么表示替换所有匹配项：结尾的 `g` 是 global（全局） 的意思，表示在每一行中替换所有匹配项，如果没有 `g` ，`sed` 只会替换每行的第一个匹配项。
+
+和 `grep` 一样，这里的 `pattern` 也是正则表达式，可以描述非常复杂的匹配模式。此外，正则表达式替换还允许 `replacement` 引用匹配模式中的部分内容，我们稍后会通过例子演示这一点。
+
+接下来是 `find` ，它可以（递归地）查找满足特定条件的文件。比如：
 
 ```console
 missing:~$ find ~/Downloads -type f -name "*.zip" -mtime +30
 ```
 
-Finds ZIP files in the download directory that are older than 30 days.
+这会在下载（Downloads）目录中查找所有超过 30 天的 ZIP 文件。
 
 ```console
 missing:~$ find ~ -type f -size +100M -exec ls -lh {} \;
 ```
 
-Finds files larger than 100M in your home directory and lists them. Note
-that `-exec` takes a _command_ terminated with a stand-alone `;` (which
-we need to escape much like a space) where `{}` is replaced with each
-matching file path by `find`.
+这会在你的「home 目录」中查找所有大于 100M 的文件并列出它们。需要注意的是，**`-exec` 参数接受一条命令**，命令以单独的 `;` 结尾（因此我们需要像转义空格那样对它进行转义）。`find` 会把每个匹配到的文件路径替换到 `{}` 的位置。
 
 ```console
 missing:~$ find . -name "*.py" -exec grep -l "TODO" {} \;
 ```
 
-Finds any `.py` files with TODO items in them.
+这会在当前工作目录下查找所有包含 TODO （这个大写单词）的 `.py` 文件。
 
-The syntax of `find` can be a little daunting, but hopefully this gives
-you a sense of how useful it can be!
+`find` 的语法可能有点让人望而生畏，但希望通过这些例子，你能感受到它有多么实用！
 
-> Consider installing and using [`fd`](https://github.com/sharkdp/fd)
-> instead of `find` for a more human-friendly (but less portable!)
-> experience.
+> 我们建议安装并使用 [`fd`](https://github.com/sharkdp/fd) 来替代 find，它更加人性化（但可移植性稍弱）。
 
-Next on the docket is `awk`, which, like `sed`, has its own programming
-language. Where `sed` is built for editing files, `awk` is built for
-parsing them. By far the most common use of `awk` is for data files with
-a regular syntax (like CSV files) where you want to extract only certain
-parts of every record (i.e., line):
+接下来我们介绍 `awk`，它和 `sed` 一样，也有自己的小语言。如果说 `sed` 是专门用来编辑文件的，那么 `awk` 则是专门用来解析文件的。
+`awk` 最常见的用途是处理具有规则语法的数据文件（比如 CSV 文件），从每条记录（即每一行）中提取你想要的部分：
 
 ```console
-missing:~$ awk '{print $2}' file
+missing:~$ awk '{print $2}' hello.csv
 ```
 
-Prints the second whitespace-separated column of every line of `file`.
-If you add `-F,`, it'll print the second comma-separated column of every
-line. `awk` can do much more --- filtering rows, computing aggregates,
-and more --- see the exercises for a taste.
+这条命令会打印 `hello.csv` 中每一行的第二列（默认以空白字符分隔，空格或制表符都算）。如果你的文件是逗号分隔的（CSV 文件常见格式），可以加上 `-F,` 参数：
 
-Putting these tools together, we can do fancy things like:
+```console
+missing:~$ awk -F, '{print $2}' hello.csv
+```
+
+这样就会把每一行按逗号分成列，然后打印第二列。
+
+除了提取列，`awk` 还能做很多操作——比如过滤行、计算统计、求和等等。具体可以通过习题自己动手试试。
+
+将这些工具组合起来，我们可以完成一些很酷的操作，比如：
 
 ```console
 missing:~$ ssh myserver 'journalctl -u sshd -b-1 | grep "Disconnected from"' \
@@ -322,11 +245,7 @@ missing:~$ ssh myserver 'journalctl -u sshd -b-1 | grep "Disconnected from"' \
 postgres,mysql,oracle,dell,ubuntu,inspur,test,admin,user,root
 ```
 
-This grabs SSH logs from a remote server (we'll talk more about `ssh` in
-the next lecture), searches for disconnect messages, extracts the
-username from each such message, and prints the top 10 usernames
-comma-separated. All in one command! We'll leave dissecting each step as
-an exercise.
+这条命令从远程服务器上抓取 SSH 日志（关于 `ssh` 我们会在下一讲详细介绍），搜索断开连接的消息，从每条消息中提取用户名，最后打印出现次数最多的前 10 个用户名（用逗号分隔）。这一切都在一条命令里完成！我们把逐步拆解这条命令的任务留作习题。
 
 ## The shell language (bash)
 
