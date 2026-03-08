@@ -247,70 +247,31 @@ postgres,mysql,oracle,dell,ubuntu,inspur,test,admin,user,root
 
 这条命令从远程服务器上抓取 SSH 日志（关于 `ssh` 我们会在下一讲详细介绍），搜索断开连接的消息，从每条消息中提取用户名，最后打印出现次数最多的前 10 个用户名（用逗号分隔）。这一切都在一条命令里完成！我们把逐步拆解这条命令的任务留作习题。
 
-## The shell language (bash)
+## Shell 语言（bash）
 
-The previous example introduced a new concept: pipes (`|`). These let
-you string together the output of one program with the input of another.
-This works because most command-line programs will operate on their
-"standard input" (where your keystrokes normally go) if no `file`
-argument is given. `|` takes the "standard output" (what normally gets
-printed to your terminal) of the program before the `|` and makes it be
-the standard input of the program after the `|`. This allows you to
-_compose_ shell programs, and it's part of what makes the shell such a
-productive environment to work in!
+前面的例子引入了一个新概念：管道符（ `|` ）。它可以把一个程序的输出，接到另一个程序的输入上。之所以可行，是因为多数命令行程序在没有给出 `file` 参数时，都会从「标准输入」（通常是你键盘输入的位置）读取数据。`|` 会把它前面程序的「标准输出」（通常是打印在终端上的内容）作为后面程序的标准输入。借助这种机制，我们就能**把多个 Shell 程序进行组合（compose）**，这也是 Shell 如此高效好用的重要原因之一。
 
-In fact, most shells implement a full programming language (like bash),
-just like Python or Ruby. It has variables, conditionals, loops, and
-functions. When you run commands in your shell, you are really writing a
-small bit of code that your shell interprets. We won't teach you all of
-bash today, but there are some bits you'll find particularly useful:
+事实上，大多数 Shell（例如 bash）本身都实现了一门完整的编程语言，就像 Python 或 Ruby 一样。它有变量、条件判断、循环和函数。当你在 Shell 里执行命令时，本质上就是在写一小段由 Shell 解释执行的代码。我们今天不会系统讲完 bash，但有几部分你会特别常用：
 
-First, redirects: `>file` lets you take the standard output of a program
-and write it to `file` instead of to your terminal. This makes it easier
-to analyze after the fact. `>>file` will append to `file` rather than
-overwrite it. There's also `<file` which tells the shell to read from
-`file` instead of from your keyboard as the standard input to a program.
+先说重定向：`>file` 可以把程序的标准输出写入 `file` ，而不是显示在终端里，方便你之后再分析。`>>file` 会追加到 `file`，而不是覆盖原内容。还有 `<file` ，它会让程序把 `file` 当作标准输入来源，而不是从键盘读取。
 
-> This is a good time to mention the `tee` program. `tee` will print
-> standard input to standard output (just like `cat`!), but will _also_
-> write it to a file. So `verbose cmd | tee verbose.log | grep CRITICAL`
-> will preserve the full verbose log to a file while keeping your
-> terminal clean!
+> 这里正好提一下 `tee` 程序。`tee` 会把标准输入输出到标准输出（和 `cat` 一样），但**同时也会把内容写入文件**。所以像 `verbose cmd | tee verbose.log | grep CRITICAL` 这样的命令，既能把完整的详细日志保存到文件里，又能让终端里只保留筛选后的关键信息，保持整洁。
 
-Next, conditionals: `if command1; then command2; command3; fi` will
-execute `command1`, and if it doesn't result in an error, will run
-`command2` and `command3`. You can also have an `else` branch if you
-wish. The most common command to use as `command1` is the `test`
-command, often abbreviated simply as `[`, which lets you evaluate
-conditions like "does a file exist" (`test -f file` / `[ -f file ]`) or
-"does a string equal another" (`[ "$var" = "string" ]`). In bash,
-there's also `[[ ]]`, which is a "safer" built-in version of `test` that
-has fewer odd behaviours around quoting.
+接着是条件语句：`if command1; then command2; command3; fi` 会先执行 `command1`，如果它没有报错，就继续执行 `command2` 和 `command3` 。你也可以加上 `else` 分支。最常作为 `command1` 的是 `test` 命令，通常简写成 `[` ，可用于判断诸如「文件是否存在」（ `test -f file / [ -f file ]` ）或「字符串是否相等」（ `[ "$var" = "string" ]` ）等条件。在 bash 中还有 `[[ ]]`，它是 test 的一种更「安全」的内置写法，在引号处理等方面的怪异行为更少。
 
-Bash also has two forms of loops, `while` and `for`. `while command1; do
-command2; command3; done` functions just like the equivalent `if`
-command, except that it will re-execute the whole thing over and over
-for as long as `command1` does not error. `for varname in a b c d; do
-command; done` executes `command` four times, each time with `$varname`
-set to one of `a`, `b`, `c`, and `d`. Instead of listing the items
-explicitly, you'll often use "command substitution", such as:
+bash 还有两种循环形式：`while` 和 `for` 。<br>
+`while command1; do command2; command3; done` 的逻辑和前面的 `if` 类似，不同之处在于：只要 `command1` 不报错，就会不断重复执行整个循环体。<br>
+`for varname in a b c d; do command; done` 会执行 `command` 四次，每次把 `$varname` 依次设为 `a` 、`b` 、`c` 、`d` 。<br>
+实际使用中，你往往不需要手写列表，而是用「命令替换（command substitution）」，例如：
 
 ```bash
 for i in $(seq 1 10); do
 ```
 
-This executes the command `seq 1 10` (which prints the numbers from 1 to
-10 inclusive) and then replaces the whole `$()` with that command's
-output, giving you a 10-iteration for loop. In older code you'll
-sometimes see literal backticks (like ``for i in `seq 1 10`; do``)
-instead of `$()`, but you should strongly prefer the `$()` form as it
-can be nested.
+这会执行命令 `seq 1 10`（它会输出从 1 到 10 的所有整数，包含 10），然后用该命令的输出替换整个 `$()`，从而得到一个循环 10 次的 `for` 循环。
+在较早之前编写的代码中，你有时会看到直接使用反引号（例如 ``for i in `seq 1 10`; do``）来做同样的事；但在当下，你应当优先使用 `$()` 这种写法，因为它支持嵌套。
 
-While you _can_ write long shell scripts directly in your prompt, you'll
-usually want to write them into a `.sh` file instead. For example,
-here's a script that will run a program in a loop until it fails,
-printing the output only of the failed run, while stressing your CPU in
-the background (useful to reproduce flaky tests for example):
+虽然你**可以直接在提示符里写很长的 Shell 脚本**，但通常更推荐把它们写进 `.sh` 文件。比如，下面这个脚本会在循环中反复运行某个程序，直到它失败为止；它只打印失败那一次运行的输出，同时在后台施加 CPU 压力（常用于「复现偶发性失败测试」这样的例子）。
 
 ```bash
 #!/bin/bash
@@ -339,161 +300,65 @@ tail -n 20 "$LOGFILE"
 echo "Full log: $LOGFILE"
 ```
 
-This has a number of new things in it that I recommend you spend some
-time diving into, as they're very useful in crafting useful shell
-invocations like background jobs (`&`) to run programs concurrently,
-trickier [shell
-redirections](https://www.gnu.org/software/bash/manual/html_node/Redirections.html),
-and [arithmetic
-expansion](https://www.gnu.org/software/bash/manual/html_node/Arithmetic-Expansion.html).
+这段代码里包含了不少新内容，建议花些时间深入理解，因为它们对编写实用的 Shell 命令非常有帮助。比如：用后台任务（ `&` ）并发运行程序、更复杂的 [Shell 重定向](https://www.gnu.org/software/bash/manual/html_node/Redirections.html) 、以及 [算术扩展](https://www.gnu.org/software/bash/manual/html_node/Arithmetic-Expansion.html) 。
 
-It's worth spending a second on the first two lines of the program
-though. The first is the "shebang" -- you'll see this at the top of
-other files than shell scripts too. When a file that starts with the
-magic incantation `#!/path` is executed, the shell will start the
-program at `/path`, and pass it the contents of the file as input. In
-the case of a shell script, this means passing the contents of the shell
-script to `/bin/bash`, but you can also write Python scripts with a
-shebang line of `/usr/bin/python`!
+值得先特别看一下这个程序的前两行。<br>
+第一行是「解释器指示行（shebang）」，你在很多不仅仅是 Shell 脚本的文件开头也会看到它。
+当一个以 `#!/path` 这段「魔法咒语」开头的文件被执行时，Shell 会启动 `/path` 指向的程序，并把该文件内容作为输入传给它。
+对 Shell 脚本来说，这意味着把脚本内容交给 bash ；但你同样可以写 Python 脚本，并使用 `/usr/bin/python` 作为 shebang 。
+第二行则是让 bash 更「严格」的一种方式，可以减少写 Shell 脚本时常见的坑。`set` 可以接收很多参数，简单说：
+- `-e` 表示任何命令失败时脚本立即退出
+- `-u` 表示使用未定义变量时直接报错，而不是默默当作空字符串
+- `-o pipefail` 表示在 `|` 管道序列中，只要有程序失败，整个脚本也会尽早退出
 
-The second line is a way to make bash "stricter", and mitigate a number
-of footguns when writing shell scripts. `set` can take a whole lot of
-arguments, but briefly: `-e` makes it so that if any command fails, the
-script exits early; `-u` makes it so that use of undefined variables
-crashes the script rather than just using an empty string; and `-o
-pipefail` makes it so that if programs in a `|` sequence fail, the
-shell script as a whole also exits early.
+> Shell 编程和其他编程语言一样，是个很深的主题；<br>
+> 但我们要提醒你：bash 的「坑」尤其多，多到已经有 [不止一个网站](https://tldp.org/LDP/abs/html/gotchas.html) 专门整理 [这些问题](https://mywiki.wooledge.org/BashPitfalls) 。<br>
+> 我们强烈建议你在写脚本时大量使用 [shellcheck](https://www.shellcheck.net/) 。<br>
+> LLM 在编写和调试 Shell 脚本方面也很有帮助；当脚本对 bash 来说变得过于臃肿（100 行以上）时，它们也很适合把脚本迁移到更「正规」的编程语言（例如 Python）。
 
-> Shell programming is a deep topic, just as any programming language
-> is, but be warned: bash has an unusual number of gotchas, to the point
-> that there are [multiple](https://tldp.org/LDP/abs/html/gotchas.html)
-> websites dedicated to [listing them](https://mywiki.wooledge.org/BashPitfalls).
-> I highly recommend making heavy use of
-> [shellcheck](https://www.shellcheck.net/) when writing them. LLMs are
-> also great at writing and debugging shell scripts, as well as
-> translating them to a "real" programming language (like Python) when
-> they've grown too unwieldy for bash (100+ lines).
+# 下一步
 
-# Next steps
+到这里，你已经足够熟悉 Shell，可以完成基础任务。你应该能够在系统中导航、找到你关心的文件，并使用大多数程序的基本功能。下一讲里，我们会讨论如何借助 Shell 以及众多好用的命令行工具来完成并自动化更复杂的任务。
 
-At this point you know your way around a shell enough to accomplish
-basic tasks. You should be able to navigate around to find files of
-interest and use the basic functionality of most programs. In the next
-lecture, we will talk about how to perform and automate more complex
-tasks using the shell and the many handy command-line programs out
-there.
+# 练习
 
-# Exercises
+本课程每一讲都配有一组练习。有些练习给出明确任务，有些则是开放题，比如「试试使用 X 和 Y 工具」。我们非常鼓励你亲自上手。
 
-All classes in this course are accompanied by a series of exercises.
-Some give you a specific task to do, while others are open-ended, like
-"try using X and Y programs". We highly encourage you to try them out.
+我们还没有提供这些练习的标准答案。如果你被某个问题卡住了，欢迎在 [Discord](https://ossu.dev/#community) 的 `#missing-semester-forum` 发帖，或发送邮件告诉我们你已经尝试了什么，我们会尽力帮你。
+这些练习也很适合作为与 LLM 对话的起始提示，让你以交互方式深入探索。练习真正的价值在于「探索答案的过程」，而不只是答案本身。我们鼓励你在做题时顺着分支问题继续深挖，多问「为什么」，而不是只追求最短解法路径。
 
-We have not written solutions for the exercises. If you are stuck on
-anything in particular, feel free to post in `#missing-semester-forum`
-on [Discord](https://ossu.dev/#community) or send us an email describing
-what you've tried so far, and we will try to help you out. These
-exercises will also likely work well as initial prompts in a
-conversation with an LLM where you can interactively dive into the
-topic. The real value in these exercises is the journey of discovering
-the answers, not the answer itself. We encourage you to follow tangents
-and ask "why" as you work through them, rather than just looking for the
-shortest path to the solution.
+1. 本课程要求你使用类 Unix 的 Shell，如 Bash 或 ZSH 。若你在 Linux 或 macOS 上，无需额外设置。若你在 Windows 上，请确认你用的不是 cmd.exe 或 PowerShell；你可以使用 [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) 或 Linux 虚拟机来获得 Unix 风格的命令行工具。要确认当前 Shell 是否合适，可运行 `echo $SHELL`；若输出类似 `/bin/bash` 或 `/usr/bin/zsh` ，就说明没问题。
 
-1. For this course, you need to be using a Unix shell like Bash or ZSH. If
-   you are on Linux or macOS, you don't have to do anything special. If you
-   are on Windows, you need to make sure you are not running cmd.exe or
-   PowerShell; you can use [Windows Subsystem for
-   Linux](https://docs.microsoft.com/en-us/windows/wsl/) or a Linux virtual
-   machine to use Unix-style command-line tools. To make sure you're running
-   an appropriate shell, you can try the command `echo $SHELL`. If it says
-   something like `/bin/bash` or `/usr/bin/zsh`, that means you're running
-   the right program.
+2. `ls` 的 `-l` 参数作用是什么？运行 `ls -l /` 并观察输出。每一行最前面的 10 个字符分别代表什么？（提示：`man ls`）
 
-1. What does the `-l` flag to `ls` do? Run `ls -l /` and examine the output.
-   What do the first 10 characters of each line mean? (Hint: `man ls`)
+3. 在命令 `find ~/Downloads -type f -name "*.zip" -mtime +30` 中，`*.zip` 是一个 「glob」。什么是 glob ？新建一个测试目录并创建一些文件，试试 `ls *.txt` 、`ls file?.txt` 、`ls {a,b,c}.txt` 等模式。参见 Bash 手册中的 [Pattern Matching](https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html) 。
 
-1. In the command `find ~/Downloads -type f -name "*.zip" -mtime +30`, the
-   `*.zip` is a "glob". What is a glob? Create a test directory with some
-   files and experiment with patterns like `ls *.txt`, `ls file?.txt`, and
-   `ls {a,b,c}.txt`. See [Pattern
-   Matching](https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html)
-   in the Bash manual.
+4. ``'单引号'``、``"双引号"`` 和 ``$'ANSI 引号'`` 有什么区别？写一条命令，输出一个同时包含字面量 `$` 、`!` 和换行符的字符串。参见 [Quoting](https://www.gnu.org/software/bash/manual/html_node/Quoting.html) 。
 
-1. What's the difference between `'single quotes'`, `"double quotes"`, and
-   `$'ANSI quotes'`? Write a command that echoes a string containing a
-   literal `$`, a `!`, and a newline character. See
-   [Quoting](https://www.gnu.org/software/bash/manual/html_node/Quoting.html).
+5. Shell 有三条标准流：stdin（0）、stdout（1）、stderr（2）。运行 `ls /nonexistent /tmp` ，把 stdout 和 stderr 分别重定向到两个文件。你将如何把两者都重定向到同一个文件？参见 [Redirections](https://www.gnu.org/software/bash/manual/html_node/Redirections.html) 。
 
-1. The shell has three standard streams: stdin (0), stdout (1), and stderr
-   (2). Run `ls /nonexistent /tmp` and redirect stdout to one file and
-   stderr to another. How would you redirect both to the same file? See
-   [Redirections](https://www.gnu.org/software/bash/manual/html_node/Redirections.html).
+6. `$?` 保存上一条命令的退出状态（0 表示成功）。`&&` 仅在前一条成功时执行后一条；`||` 仅在前一条失败时执行后一条。写一个一行命令：仅当 `/tmp/mydir` 不存在时才创建它。参见 [Exit Status](https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html) 。
 
-1. `$?` holds the exit status of the last command (0 = success). `&&` runs
-   the next command only if the previous succeeded; `||` runs it only if
-   the previous failed. Write a one-liner that creates `/tmp/mydir` only if
-   it doesn't already exist. See [Exit
-   Status](https://www.gnu.org/software/bash/manual/html_node/Exit-Status.html).
+7. 为什么 `cd` 必须是 Shell 内建命令，而不能是独立程序？（提示：想想子进程能影响和不能影响父进程的哪些状态。）
 
-1. Why does `cd` have to be built into the shell itself rather than a
-   standalone program? (Hint: think about what a child process can and
-   cannot affect in its parent.)
+8. 写一个脚本，接收文件名参数（`$1`），用 `test -f` 或 `[ -f ... ]` 检查该文件是否存在，并根据结果输出不同提示。参见 [Bash Conditional Expressions](https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html) 。
 
-1. Write a script that takes a filename as an argument (`$1`) and checks
-   whether the file exists using `test -f` or `[ -f ... ]`. It should print
-   different messages depending on whether the file exists. See [Bash
-   Conditional
-   Expressions](https://www.gnu.org/software/bash/manual/html_node/Bash-Conditional-Expressions.html).
+9. 把上一题完成的脚本保存为文件（如 `check.sh`）。先运行 `./check.sh somefile` ，会发生什么？然后执行 `chmod +x check.sh` 再试一次。为什么这一步是必须的？（提示：比较 `chmod` 前后的 `ls -l check.sh` 输出）
 
-1. Save the script from the previous exercise to a file (e.g., `check.sh`).
-   Try running it with `./check.sh somefile`. What happens? Now run
-   `chmod +x check.sh` and try again. Why is this step necessary? (Hint:
-   look at `ls -l check.sh` before and after the `chmod`.)
+10. 在脚本的 `set` 选项里加入 `-x` 会发生什么？写个简单脚本试试并观察输出。参见 [The Set Builtin](https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html) 。
 
-1. What happens if you add `-x` to the `set` flags in a script? Try it with
-    a simple script and observe the output. See [The Set
-    Builtin](https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html).
+11. 写一条命令，把文件复制为带当天日期的备份文件名（例如 `notes.txt` → `notes_2026-01-12.txt`）。（提示：`$(date +%Y-%m-%d)`）参见 [Command Substitution](https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html) 。
 
-1. Write a command that copies a file to a backup with today's date in the
-    filename (e.g., `notes.txt` → `notes_2026-01-12.txt`). (Hint: `$(date
-    +%Y-%m-%d)`). See [Command
-    Substitution](https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html).
+12. 修改讲义中的「复现偶发性失败测试」脚本，让它接收测试命令参数，而不是写死 `cargo test my_test`。（提示：`$1` 或 `$@`）参见 [Special Parameters](https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html) 。
 
-1. Modify the flaky test script from the lecture to accept the test command
-    as an argument instead of hardcoding `cargo test my_test`. (Hint: `$1`
-    or `$@`). See [Special
-    Parameters](https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html).
+13. 使用管道找出你「home 目录」中最常见的 5 种文件扩展名。（提示：组合 `find` 、`grep` / `sed` / `awk`、`sort`、`uniq -c` 以及 `head`）
 
-1. Use pipes to find the 5 most common file extensions in your home
-    directory. (Hint: combine `find`, `grep` or `sed` or `awk`, `sort`,
-    `uniq -c`, and `head`.)
+14. `xargs` 会把 stdin 的每一行转换为命令参数。结合 `find` 和 `xargs`（不要用 `find -exec`），找出目录中所有 `.sh` 文件，并用 `wc -l` 统计每个文件行数。加分项：正确处理文件名中的空格。（提示：`-print0` 和 `-0`）参见 `man xargs` 。
 
-1. `xargs` converts lines from stdin into command arguments. Use `find` and
-    `xargs` together (not `find -exec`) to find all `.sh` files in a
-    directory and count the lines in each with `wc -l`. Bonus: make it
-    handle filenames with spaces. (Hint: `-print0` and `-0`). See `man
-    xargs`.
+15. 使用 `curl` 获取 [课程网站](https://missing.csail.mit.edu/) 的 HTML，并通过 `grep` 统计列出了多少讲。（提示：找出每讲课程名称在那份 HTML 中的共性；用 `curl -s` 关闭进度输出。）
 
-1. Use `curl` to fetch the HTML of the course website
-    (`https://missing.csail.mit.edu/`) and pipe it to `grep` to count how
-    many lectures are listed. (Hint: look for a pattern that appears once
-    per lecture; use `curl -s` to silence the progress output.)
+16. [`jq`](https://jqlang.github.io/jq/) 是处理 JSON 的强大工具。用 curl 获取示例数据 https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json，再用 jq 提取 version 大于 6 的人员姓名。（提示：先 `jq` . 看结构；再试 `jq '.[] | select(...) | .name'`）
 
-1. [`jq`](https://jqlang.github.io/jq/) is a powerful tool for processing
-    JSON data. Fetch the sample data at
-    `https://microsoftedge.github.io/Demos/json-dummy-data/64KB.json` with
-    `curl` and use `jq` to extract just the names of people whose version
-    is greater than 6. (Hint: pipe to `jq .` first to see the structure;
-    then try `jq '.[] | select(...) | .name'`)
+17. `awk` 可以按列值过滤行并改写输出。例如，`awk '$3 ~ /pattern/ {$4=""; print}'` 会只输出第三列匹配 `pattern` 的行，并省略第四列。请写一个 `awk` 命令：只输出第二列大于 100 的行，并交换第一列和第三列。可用这条命令测试：`printf 'a 50 x\nb 150 y\nc 200 z\n'`
 
-1. `awk` can filter lines based on column values and manipulate output.
-    For example, `awk '$3 ~ /pattern/ {$4=""; print}'` prints only lines
-    where the third column matches `pattern`, while omitting the fourth
-    column. Write an `awk` command that prints only lines where the second
-    column is greater than 100, and swaps the first and third columns. Test
-    with: `printf 'a 50 x\nb 150 y\nc 200 z\n'`
-
-1. Dissect the SSH log pipeline from the lecture: what does each step do?
-    Then build something similar to find your most-used shell commands from
-    `~/.bash_history` (or `~/.zsh_history`).
+18. 拆解讲义中的 [SSH 日志处理管道](#shell-语言bash)：每一步分别做了什么？然后仿照它构建一个管道，从 `~/.bash_history`（或 `~/.zsh_history`）中找出你最常使用的 Shell 命令。
