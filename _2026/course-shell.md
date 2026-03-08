@@ -249,29 +249,29 @@ postgres,mysql,oracle,dell,ubuntu,inspur,test,admin,user,root
 
 ## Shell 语言（bash）
 
-前面的例子引入了一个新概念：管道符（ `|` ）。它可以把一个程序的输出，接到另一个程序的输入上。之所以可行，是因为多数命令行程序在没有给出 `file` 参数时，都会从「标准输入」（通常是你键盘输入的位置）读取数据。`|` 会把它前面程序的「标准输出」（通常是打印在终端上的内容）作为后面程序的标准输入。借助这种机制，我们就能**把多个 Shell 程序进行组合（compose）**，这也是 Shell 如此高效好用的重要原因之一。
+前面的例子引入了一个新概念：管道（ `|` ）。它可以把一个程序的输出连接到另一个程序的输入。之所以可行，是因为多数命令行程序在没有给出 `file` 参数时，都会从「标准输入」（通常是你键盘输入的位置）读取数据。`|` 会把它前面程序的「标准输出」（通常是打印在终端上的内容）作为后面程序的标准输入。借助这种机制，我们就能**把多个 Shell 程序组合起来（compose）**，这也是 Shell 如此高效好用的重要原因之一。
 
-事实上，大多数 Shell（例如 bash）本身都实现了一门完整的编程语言，就像 Python 或 Ruby 一样。它有变量、条件判断、循环和函数。当你在 Shell 里执行命令时，本质上就是在写一小段由 Shell 解释执行的代码。我们今天不会系统讲完 bash，但有几部分你会特别常用：
+事实上，大多数 Shell（例如 bash）本身都实现了一套完整的编程语言，就像 Python 或 Ruby 一样。它有变量、条件判断、循环和函数。当你在 Shell 中执行命令时，本质上就是在编写一小段由 Shell 解释执行的代码。我们今天不会系统讲完 bash，但有几部分你会特别常用：
 
-先说重定向：`>file` 可以把程序的标准输出写入 `file` ，而不是显示在终端里，方便你之后再分析。`>>file` 会追加到 `file`，而不是覆盖原内容。还有 `<file` ，它会让程序把 `file` 当作标准输入来源，而不是从键盘读取。
+先说重定向：`> file` 可以把程序的标准输出写入 `file` ，而不是显示在终端中，这样之后再分析就更方便。`>> file` 会追加到 `file`，而不是覆盖原内容。还有 `< file` ，它会让程序把 `file` 当作标准输入来源，而不是从键盘读取。
 
-> 这里正好提一下 `tee` 程序。`tee` 会把标准输入输出到标准输出（和 `cat` 一样），但**同时也会把内容写入文件**。所以像 `verbose cmd | tee verbose.log | grep CRITICAL` 这样的命令，既能把完整的详细日志保存到文件里，又能让终端里只保留筛选后的关键信息，保持整洁。
+> 这里正好提一下 `tee` 程序。`tee` 会把标准输入原样输出到标准输出（和 `cat` 一样），但**同时也会把内容写入文件**。所以像 `verbose cmd | tee verbose.log | grep CRITICAL` 这样的命令，既能把完整的详细日志保存到文件里，又能让终端里只保留筛选后的关键信息，保持终端整洁。
 
-接着是条件语句：`if command1; then command2; command3; fi` 会先执行 `command1`，如果它没有报错，就继续执行 `command2` 和 `command3` 。你也可以加上 `else` 分支。最常作为 `command1` 的是 `test` 命令，通常简写成 `[` ，可用于判断诸如「文件是否存在」（ `test -f file / [ -f file ]` ）或「字符串是否相等」（ `[ "$var" = "string" ]` ）等条件。在 bash 中还有 `[[ ]]`，它是 test 的一种更「安全」的内置写法，在引号处理等方面的怪异行为更少。
+接着是条件语句：`if command1; then command2; command3; fi` 会先执行 `command1`，如果执行成功，就继续执行 `command2` 和 `command3` 。你也可以加上 `else` 分支。最常作为 `command1` 的是 `test` 命令，通常简写成 `[` ，可用于判断诸如「文件是否存在」（ `test -f file / [ -f file ]` ）或「字符串是否相等」（ `[ "$var" = "string" ]` ）等条件。在 bash 中还有 `[[ ]]`，它是 test 的一种更「安全」的内置形式，在引号处理等方面的怪异行为更少。
 
 bash 还有两种循环形式：`while` 和 `for` 。<br>
-`while command1; do command2; command3; done` 的逻辑和前面的 `if` 类似，不同之处在于：只要 `command1` 不报错，就会不断重复执行整个循环体。<br>
+`while command1; do command2; command3; done` 的逻辑和前面的 `if` 命令类似，不同之处在于：只要 `command1` 不报错，就会不断重复执行整个循环体。<br>
 `for varname in a b c d; do command; done` 会执行 `command` 四次，每次把 `$varname` 依次设为 `a` 、`b` 、`c` 、`d` 。<br>
-实际使用中，你往往不需要手写列表，而是用「命令替换（command substitution）」，例如：
+实际使用中，你往往不需要手动列出这些值，而是用「命令替换（command substitution）」，例如：
 
 ```bash
 for i in $(seq 1 10); do
 ```
 
 这会执行命令 `seq 1 10`（它会输出从 1 到 10 的所有整数，包含 10），然后用该命令的输出替换整个 `$()`，从而得到一个循环 10 次的 `for` 循环。
-在较早之前编写的代码中，你有时会看到直接使用反引号（例如 ``for i in `seq 1 10`; do``）来做同样的事；但在当下，你应当优先使用 `$()` 这种写法，因为它支持嵌套。
+在较早之前编写的代码中，你有时会看到直接使用反引号（例如 ``for i in `seq 1 10`; do``）来做同样的事；但现在应当优先使用 `$()` 这种写法，因为它支持嵌套。
 
-虽然你**可以直接在提示符里写很长的 Shell 脚本**，但通常更推荐把它们写进 `.sh` 文件。比如，下面这个脚本会在循环中反复运行某个程序，直到它失败为止；它只打印失败那一次运行的输出，同时在后台施加 CPU 压力（常用于「复现偶发性失败测试」这样的例子）。
+虽然你**可以直接在提示符里写很长的 Shell 脚本**，但通常更推荐把它们写进 `.sh` 文件。例如，下面这个脚本会在循环中不断运行某个程序，直到它失败为止；它只会打印失败那一次运行的输出，同时在后台对 CPU 施加压力（例如，这在复现那些「偶尔才会失败的测试（flaky test）」时非常有用）。
 
 ```bash
 #!/bin/bash
@@ -304,9 +304,9 @@ echo "Full log: $LOGFILE"
 
 值得先特别看一下这个程序的前两行。<br>
 第一行是「解释器指示行（shebang）」，你在很多不仅仅是 Shell 脚本的文件开头也会看到它。
-当一个以 `#!/path` 这段「魔法咒语」开头的文件被执行时，Shell 会启动 `/path` 指向的程序，并把该文件内容作为输入传给它。
+当一个以 `#!/path` 这段「魔法咒语」开头的文件被执行时，Shell 会启动 `/path` 指向的程序，并把该文件内容作为输入传递给它。
 对 Shell 脚本来说，这意味着把脚本内容交给 bash ；但你同样可以写 Python 脚本，并使用 `/usr/bin/python` 作为 shebang 。
-第二行则是让 bash 更「严格」的一种方式，可以减少写 Shell 脚本时常见的坑。`set` 可以接收很多参数，简单说：
+第二行则是一种让 bash 运行得更「严格」的方式，可以避免许多编写 Shell 脚本时常见的陷阱。`set` 可以接收很多参数，简单说：
 - `-e` 表示任何命令失败时脚本立即退出
 - `-u` 表示使用未定义变量时直接报错，而不是默默当作空字符串
 - `-o pipefail` 表示在 `|` 管道序列中，只要有程序失败，整个脚本也会尽早退出
@@ -314,22 +314,22 @@ echo "Full log: $LOGFILE"
 > Shell 编程和其他编程语言一样，是个很深的主题；<br>
 > 但我们要提醒你：bash 的「坑」尤其多，多到已经有 [不止一个网站](https://tldp.org/LDP/abs/html/gotchas.html) 专门整理 [这些问题](https://mywiki.wooledge.org/BashPitfalls) 。<br>
 > 我们强烈建议你在写脚本时大量使用 [shellcheck](https://www.shellcheck.net/) 。<br>
-> LLM 在编写和调试 Shell 脚本方面也很有帮助；当脚本对 bash 来说变得过于臃肿（100 行以上）时，它们也很适合把脚本迁移到更「正规」的编程语言（例如 Python）。
+> LLM 在编写和调试 Shell 脚本方面也很有帮助；当脚本对 bash 来说变得过于臃肿（100 行以上）时，它们也很适合把脚本迁移到更「正式」的编程语言（例如 Python）。
 
 # 下一步
 
-到这里，你已经足够熟悉 Shell，可以完成基础任务。你应该能够在系统中导航、找到你关心的文件，并使用大多数程序的基本功能。下一讲里，我们会讨论如何借助 Shell 以及众多好用的命令行工具来完成并自动化更复杂的任务。
+到这里，你已经对 Shell 足够熟悉，可以完成一些基础任务。你应该能够在系统中导航、找到你关心的文件，并使用大多数程序的基本功能。下一讲里，我们会讨论如何借助 Shell 以及众多好用的命令行工具来完成并自动化更复杂的任务。
 
 # 练习
 
 本课程每一讲都配有一组练习。有些练习给出明确任务，有些则是开放题，比如「试试使用 X 和 Y 工具」。我们非常鼓励你亲自上手。
 
 我们还没有提供这些练习的标准答案。如果你被某个问题卡住了，欢迎在 [Discord](https://ossu.dev/#community) 的 `#missing-semester-forum` 发帖，或发送邮件告诉我们你已经尝试了什么，我们会尽力帮你。
-这些练习也很适合作为与 LLM 对话的起始提示，让你以交互方式深入探索。练习真正的价值在于「探索答案的过程」，而不只是答案本身。我们鼓励你在做题时顺着分支问题继续深挖，多问「为什么」，而不是只追求最短解法路径。
+这些练习也很适合作为与 LLM 交流时的起始提示，让你以交互方式深入探索。这些练习真正的价值在于「探索答案的过程」，而不只是答案本身。我们鼓励你在做题时顺着分支问题继续深挖，多问「为什么」，而不是只追求最短解法路径。
 
-1. 本课程要求你使用类 Unix 的 Shell，如 Bash 或 ZSH 。若你在 Linux 或 macOS 上，无需额外设置。若你在 Windows 上，请确认你用的不是 cmd.exe 或 PowerShell；你可以使用 [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) 或 Linux 虚拟机来获得 Unix 风格的命令行工具。要确认当前 Shell 是否合适，可运行 `echo $SHELL`；若输出类似 `/bin/bash` 或 `/usr/bin/zsh` ，就说明没问题。
+1. 本课程要求你使用类 Unix 的 Shell，如 Bash 或 ZSH 。若你在 Linux 或 macOS 上，无需额外设置。若你在 Windows 上，请确认你用的不是 `cmd.exe` 或 `PowerShell`；你可以使用 [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) 或 Linux 虚拟机来获得 Unix 风格的命令行工具。要确认当前 Shell 是否合适，可运行 `echo $SHELL`；若输出类似 `/bin/bash` 或 `/usr/bin/zsh` ，就说明没问题。
 
-2. `ls` 的 `-l` 参数作用是什么？运行 `ls -l /` 并观察输出。每一行最前面的 10 个字符分别代表什么？（提示：`man ls`）
+2. `ls` 的 `-l` 选项（flag）作用是什么？运行 `ls -l /` 并观察输出。每一行最前面的 10 个字符分别代表什么？（提示：`man ls`）
 
 3. 在命令 `find ~/Downloads -type f -name "*.zip" -mtime +30` 中，`*.zip` 是一个 「glob」。什么是 glob ？新建一个测试目录并创建一些文件，试试 `ls *.txt` 、`ls file?.txt` 、`ls {a,b,c}.txt` 等模式。参见 Bash 手册中的 [Pattern Matching](https://www.gnu.org/software/bash/manual/html_node/Pattern-Matching.html) 。
 
@@ -345,11 +345,11 @@ echo "Full log: $LOGFILE"
 
 9. 把上一题完成的脚本保存为文件（如 `check.sh`）。先运行 `./check.sh somefile` ，会发生什么？然后执行 `chmod +x check.sh` 再试一次。为什么这一步是必须的？（提示：比较 `chmod` 前后的 `ls -l check.sh` 输出）
 
-10. 在脚本的 `set` 选项里加入 `-x` 会发生什么？写个简单脚本试试并观察输出。参见 [The Set Builtin](https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html) 。
+10. 在脚本的 `set` 选项（flag）里加入 `-x` 会发生什么？写个简单脚本试试并观察输出。参见 [The Set Builtin](https://www.gnu.org/software/bash/manual/html_node/The-Set-Builtin.html) 。
 
 11. 写一条命令，把文件复制为带当天日期的备份文件名（例如 `notes.txt` → `notes_2026-01-12.txt`）。（提示：`$(date +%Y-%m-%d)`）参见 [Command Substitution](https://www.gnu.org/software/bash/manual/html_node/Command-Substitution.html) 。
 
-12. 修改讲义中的「复现偶发性失败测试」脚本，让它接收测试命令参数，而不是写死 `cargo test my_test`。（提示：`$1` 或 `$@`）参见 [Special Parameters](https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html) 。
+12. 修改讲义中的「复现偶尔才会失败的测试」脚本（flaky test），使它能够从命令行参数接收测试命令，而不是在脚本中写死 `cargo test my_test`。（提示：`$1` 或 `$@`）参见 [Special Parameters](https://www.gnu.org/software/bash/manual/html_node/Special-Parameters.html) 。
 
 13. 使用管道找出你「home 目录」中最常见的 5 种文件扩展名。（提示：组合 `find` 、`grep` / `sed` / `awk`、`sort`、`uniq -c` 以及 `head`）
 
