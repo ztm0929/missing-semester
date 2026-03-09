@@ -1,8 +1,8 @@
 ---
 layout: page
-title: "2026 Lectures"
+title: "2026 讲座列表"
 description: >
-  Lecture notes and videos for Missing Semester, MIT IAP 2026.
+  Missing Semester 在 MIT IAP 2026 项目中的讲座笔记与视频资料。
 permalink: /2026/
 phony: true
 ---

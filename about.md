@@ -1,140 +1,93 @@
 ---
 layout: lecture
-title: "Why we are teaching this class"
+title: "我们为何开设这门课程"
 ---
 
-During a traditional Computer Science education, chances are you will take
-plenty of classes that teach you advanced topics within CS, everything from
-Operating Systems to Programming Languages to Machine Learning. But at many
-institutions there is one essential topic that is rarely covered and is instead
-left for students to pick up on their own: computing ecosystem literacy.
+在传统的计算机科学教育中，你很可能会修读大量讲授高深计算机主题的课程，涵盖从操作系统到编程语言再到机器学习的方方面面。然而在许多院校里，有一个至关重要的主题却鲜少被提及，往往被留给学生自行摸索：**计算生态素养**。
 
-Over the years, we have helped teach several classes at MIT, and over and over
-we have seen that many students have limited knowledge of the tools available
-to them. Computers were built to automate manual tasks, yet students often
-perform repetitive tasks by hand or fail to take full advantage of powerful
-tools such as version control and text editors. In the best case, this results
-in inefficiencies and wasted time; in the worst case, it results in issues like
-data loss or inability to complete certain tasks.
+多年来，我们在麻省理工学院参与教授了多门课程，一次又一次地发现许多学生对可用的工具所知甚少。计算机本是为自动化手工任务而设计，然而学生们却常常手工执行重复性任务，或者未能充分利用版本控制和文本编辑器等强大工具。往轻了说，这导致效率低下、时间浪费；往重了说，则会引发数据丢失或无法完成某些任务等问题。
 
-These topics are not taught as part of the university curriculum: students are
-never shown how to use these tools, or at least not how to use them
-efficiently, and thus waste time and effort on tasks that _should_ be simple.
-The standard CS curriculum is missing critical topics about the computing
-ecosystem that could make students' lives significantly easier.
+这些主题并未被纳入大学课程体系：学生们从未被教导如何使用这些工具，或者至少未被教导如何高效使用它们，因此在本应简单的任务上浪费了时间和精力。标准的计算机科学课程缺失了关于计算生态系统的关键主题，而这些内容本可以让学生们的学习生活轻松许多。
 
-# The missing semester of your CS education
+# 计算机科学教育的遗珠一课
 
-To help remedy this, we created a class that covers all the topics we
-consider crucial to be an effective computer scientist and programmer. The
-class is pragmatic and practical, and it provides hands-on introduction to
-tools and techniques that you can immediately apply in a wide variety of
-situations you will encounter. The latest iteration of this class, with
-substantially revised material, is being run during MIT's "Independent
-Activities Period" in January 2026 — a one-month semester that features shorter
-student-run classes. While the lectures themselves are only available to the MIT
-community, we will provide all lecture materials along with video recordings of
-lectures to the public.
+为了弥补这一缺憾，我们开设了这门课程，涵盖所有我们认为对成为一名高效的计算机科学家和程序员至关重要的主题。本课程注重实践，提供工具和技术的动手入门，让你能够立即将所学应用到各种实际场景中。本课程的最新版本经过大幅修订，于 2026 年 1 月在麻省理工学院的“独立活动期(Independent Activities Period)”开设——这是一个为期一个月的学期，以学生主导的短期课程为特色。虽然课程讲座本身仅向麻省理工学院开放，但我们会向公众提供所有课程材料以及课程视频录像。
 
-If this sounds like it might be for you, here are some concrete
-examples of what the class will teach:
+如果你觉得这门课程可能适合你，下面是课程中会学习的一些具体内容：
 
-## Command shell
+## 命令行 与 Shell
 
-How to automate common and repetitive tasks with aliases, scripts,
-and build systems. No more copy-pasting commands from a text
-document. No more "run these 15 commands one after the other". No
-more "you forgot to run this thing" or "you forgot to pass this
-argument".
+学习如何使用别名、脚本和构建系统来自动化常见的重复性任务，从而避免反复从文档中复制粘贴命令，也不再需要“依次运行这 15 条命令”，更不用担心“忘记执行某一步”或“忘记传入某个参数”。
 
-For example, searching through your history quickly can be a huge time saver. In the example below we show several tricks related to navigating your shell history for `convert` commands.
+例如，快速搜索历史命令可以显著节省时间。下面的示例展示了几种在 shell 历史记录中查找 `convert` 命令的技巧。
 
 <video autoplay="autoplay" loop="loop" controls muted playsinline  oncontextmenu="return false;"  preload="auto"  class="demo">
-  <source src="/static/media/demos/history.mp4" type="video/mp4">
+  <source src="{{ '/static/media/demos/history.mp4' | relative_url }}" type="video/mp4">
 </video>
 
-## Version control
+## 版本控制
 
-How to use version control _properly_, and take advantage of it to
-save you from disaster, collaborate with others, and quickly find and
-isolate problematic changes. No more `rm -rf; git clone`. No more
-merge conflicts (well, fewer of them at least). No more huge blocks
-of commented-out code. No more fretting over how to find what broke
-your code. No more "oh no, did we delete the working code?!". We'll
-even teach you how to contribute to other people's projects with pull
-requests!
+学习如何**正确**使用版本控制，并充分发挥它的作用：在问题发生时保护你的代码、与他人协作，以及快速查找并定位有问题的变更。
 
-In the example below we use `git bisect` to find which commit broke a unit test and then we fix it with `git revert`.
+不再需要动不动就 `rm -rf; git clone` 重新开始；合并冲突也会大大减少（当然，可能还是会有一些）；不会再留下大段被注释掉的代码；也不必再为找不到究竟是哪一次修改弄坏了代码而烦恼，更不用担心“糟了，我们是不是把还能用的代码删掉了？”。
+
+我们还会教你如何通过拉取请求(Pull Request)为他人的项目做贡献。
+
+在下面的示例中，我们使用 `git bisect` 来查找是哪次提交破坏了单元测试，然后用 `git revert` 来修复它。
+
 <video autoplay="autoplay" loop="loop" controls muted playsinline  oncontextmenu="return false;"  preload="auto"  class="demo">
-  <source src="/static/media/demos/git.mp4" type="video/mp4">
+  <source src="{{ '/static/media/demos/git.mp4' | relative_url }}" type="video/mp4">
 </video>
 
-## Text editing
+## 文本编辑
 
-How to efficiently edit files from the command-line, both locally and
-remotely, and take advantage of advanced editor features. No more
-copying files back and forth. No more repetitive file editing.
+学习如何在命令行中高效地编辑文件，无论是本地还是远程环境，并充分利用编辑器的高级功能。这样你就不必再在不同机器之间来回复制文件，也能避免反复进行重复性的编辑操作。
 
-Vim macros are one of its best features, in the example below we quickly convert an html table to csv format using a nested vim macro.
+Vim 宏是 Vim 最强大的功能之一。下面的示例中，我们通过嵌套的 Vim 宏，快速将一个 HTML 表格转换为 CSV 格式。
+
 <video autoplay="autoplay" loop="loop" controls muted playsinline  oncontextmenu="return false;"  preload="auto"  class="demo">
-  <source src="/static/media/demos/vim.mp4" type="video/mp4">
+  <source src="{{ '/static/media/demos/vim.mp4' | relative_url }}" type="video/mp4">
 </video>
 
-## Remote machines
+## 远程机器
 
-How to stay sane when working with remote machines using SSH keys and
-terminal multiplexing. No more keeping many terminals open just to
-run two commands at once. No more typing your password every time you
-connect. No more losing everything just because your Internet
-disconnected or you had to reboot your laptop.
+学习如何使用「SSH 密钥」和「终端复用工具」在远程机器上高效工作，从而让你的远程开发环境更加稳定和轻松。你不再需要为了同时运行两个命令而打开一堆终端，也不用在每次连接时反复输入密码，更不会因为网络断开或重启电脑而丢失所有工作。
 
-In the example below we use `tmux` to keep sessions alive in remote servers and `mosh` to support network roaming and disconnection.
+在下面的示例中，我们使用 `tmux` 在远程服务器上保持会话持续运行，并使用 `mosh` 支持网络漫游以及断线重连。
 
 <video autoplay="autoplay" loop="loop" controls muted playsinline  oncontextmenu="return false;"  preload="auto"  class="demo">
-  <source src="/static/media/demos/ssh.mp4" type="video/mp4">
+  <source src="{{ '/static/media/demos/ssh.mp4' | relative_url }}" type="video/mp4">
 </video>
 
 ## Finding files
 
-How to quickly find files that you are looking for. No
-more clicking through files in your project until you find the one
-that has the code you want.
+学习如何快速找到你需要的文件，而不必在项目目录中一层层点击或浏览文件，直到偶然找到包含目标代码的那个文件。
 
-In the example below we quickly look for files with `fd` and for code snippets with `rg`. We also quickly `cd` and `vim` recent/frequent files/folder using `fasd`.
+在下面的示例中，我们使用 `fd` 快速查找文件，用 `rg` 搜索代码片段，并借助 `fasd` 快速 `cd` 到最近或最常访问的文件和目录，甚至可以直接用 `vim` 打开它们。
 
 <video autoplay="autoplay" loop="loop" controls muted playsinline  oncontextmenu="return false;"  preload="auto"  class="demo">
-  <source src="/static/media/demos/find.mp4" type="video/mp4">
+  <source src="{{ '/static/media/demos/find.mp4' | relative_url }}" type="video/mp4">
 </video>
 
-## Data wrangling
+## 数据处理
 
-How to quickly and easily modify, view, parse, plot, and compute over
-data and files directly from the command-line. No more copy pasting
-from log files. No more manually computing statistics over data. No
-more spreadsheet plotting.
+学习如何直接在命令行中快速而灵活地对数据和文件进行修改、查看、解析、绘图以及计算。这样你就不需要再从日志文件里反复复制粘贴数据，也不用手动计算统计结果，更不必依赖电子表格来生成图表。
 
-## Code quality and continuous integration
+## 代码质量与持续集成
 
-How to use autoformatting, linting, testing, and code coverage tools to improve
-code quality. No more ugly code. No more regressions. No more code that works
-on your computer but crashes on everyone else's.
+学习如何使用自动格式化(autoformatting)、代码检查(linting)、测试(testing)以及代码覆盖率(code coverage)等工具来提升代码质量。告别难以阅读的代码，减少回归问题，也不会再出现“在你电脑上能运行，但在别人电脑上就崩溃”的情况。
 
-## Beyond the code
+## 不止于代码
 
-How to write great documentation, communicate clearly with open-source
-maintainers, submit actionable issues, and contribute pull requests that get
-merged. No more confused users who can't get started using your software. No
-more ghosting from maintainers.
+学习如何编写优秀的文档，如何与开源项目维护者清晰沟通，如何提交有价值的问题反馈（issues），以及如何提交能够顺利被合并的 Pull Request。这样就不会再有用户因为无法上手你的软件而感到困惑，也不会再遇到维护者迟迟没有回应的情况。
 
-# Conclusion
+# 结语
 
-This, and more, will be covered across the 9 class lectures, each including
-exercises for you to get more familiar with the tools on your own. If you can't
-wait until January 2026, you can also take a look at the lectures from the
-[previous offering of the course](/2020/), which covers many of the same
-topics.
+以上内容以及更多主题将贯穿 9 次课程讲座，每次课程都配有练习，帮助你自己动手熟悉这些工具。
 
-We hope to see you in January, whether virtually or in person!
+除了 2026 年版本的课程外，你也可以浏览 [2020]({{ '/2020/' | relative_url }}) 年和 [2019]({{ '/2019/' | relative_url }}) 年的课程内容。不同版本在部分细节上有所区别，其中 2026 年版本更贴近当下的技术环境和学习需求，而较早的版本则提供了另一种视角和补充内容，同样值得参考。
 
-Happy hacking,<br>
-[Anish](https://anish.io/), [Jon](https://thesquareplanet.com/), and [Jose](https://josejg.com/)
+我们期待与你一起探索这些实用的工具和技术！
+
+祝你编程愉快！<br>
+[Anish](https://anish.io/)、[Jon](https://thesquareplanet.com/) 和 [Jose](https://josejg.com/)

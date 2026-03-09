@@ -1,0 +1,35 @@
+name: Deploy to EdgeOne
+
+on:
+  push:
+    branches: [zh-cn]
+  workflow_dispatch:  # 允许手动触发
+
+jobs:
+  deploy-edgeone:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.4"
+          bundler-cache: true
+      
+      - name: Build site for EdgeOne
+        run: bundle exec jekyll build --config _config.yml,_config.edgeone.yml
+      
+      - name: Deploy to EdgeOne
+        env:
+          EDGEONE_API_TOKEN: ${{ secrets.EDGEONE_API_TOKEN }}
+        run: |
+          npx edgeone pages deploy _site/ \
+            -n missing-semester-upload \
+            -t "$EDGEONE_API_TOKEN"
+      
+      - name: Deployment Summary
+        run: |
+          echo "✅ 部署成功！"
+          echo "站点地址: https://cs.ac-wiki.cn"

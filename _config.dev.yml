@@ -1,0 +1,3 @@
+# Local development overrides.
+# Keep baseurl empty so preview works at site root in local/codespaces URLs.
+baseurl: ""
