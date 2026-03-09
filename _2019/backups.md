@@ -2,9 +2,12 @@
 layout: lecture
 title: "Backups"
 presenter: Jose
+date: 2019-01-24
+order: 2
 video:
   aspect: 56.25
   id: lrpqYF8tcYQ
+special: true
 ---
 
 There are two types of people:

@@ -12,7 +12,7 @@ phony: true
   {% for lecture in lectures %}
     {% if lecture.phony != true %}
       <li>
-        <strong>{{ lecture.date | date: '%-m/%d' }}</strong>:
+        <strong>{{ lecture.date | date: '%-m/%-d' }}</strong>:
         {% if lecture.ready %}
           <a href="{{ lecture.url }}">{{ lecture.title }}</a>
         {% elsif lecture.noclass %}
@@ -37,8 +37,8 @@ We've also shared this class beyond MIT in the hopes that others may benefit fro
 
  - [Hacker News](https://news.ycombinator.com/item?id=22226380)
  - [Lobsters](https://lobste.rs/s/ti1k98/missing_semester_your_cs_education_mit)
- - [/r/learnprogramming](https://www.reddit.com/r/learnprogramming/comments/eyagda/the_missing_semester_of_your_cs_education_mit/)
- - [/r/programming](https://www.reddit.com/r/programming/comments/eyagcd/the_missing_semester_of_your_cs_education_mit/)
+ - [r/learnprogramming](https://www.reddit.com/r/learnprogramming/comments/eyagda/the_missing_semester_of_your_cs_education_mit/)
+ - [r/programming](https://www.reddit.com/r/programming/comments/eyagcd/the_missing_semester_of_your_cs_education_mit/)
  - [Twitter](https://twitter.com/jonhoo/status/1224383452591509507)
  - [YouTube](https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J)
 

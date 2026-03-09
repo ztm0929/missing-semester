@@ -2,9 +2,12 @@
 layout: lecture
 title: "Machine Introspection"
 presenter: Jon
+date: 2019-01-24
+order: 4
 video:
   aspect: 56.25
   id: eNYT2Oq3PF8
+special: true
 ---
 
 Sometimes, computers misbehave. And very often, you want to know why.
@@ -116,12 +119,3 @@ application's log. You can also use `systemctl status` to see how all
 your system services are doing. If your boot feels slow, it's probably
 due to a couple of slow services, and you can use `systemd-analyze` (try
 it with `blame`) to figure out which ones.
-
-# Exercises
-
-`locate`?
-`dmidecode`?
-`tcpdump`?
-`/boot`?
-`iptables`?
-`/proc`?

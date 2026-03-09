@@ -2,9 +2,12 @@
 layout: lecture
 title: "Web and Browsers"
 presenter: Jose
+date: 2019-01-31
+order: 1
 video:
   aspect: 62.5
   id: XpZO3S8odec
+special: true
 ---
 
 Apart from the terminal, the web browser is a tool you will find yourself spending significant amounts of time into. Thus it is worth learning how to use it efficiently and

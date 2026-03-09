@@ -2,9 +2,12 @@
 layout: lecture
 title: "OS Customization"
 presenter: Anish
+date: 2019-01-29
+order: 3
 video:
   aspect: 62.5
   id: epSRVqQzeDo
+special: true
 ---
 
 There is a lot you can do to customize your operating system beyond what is

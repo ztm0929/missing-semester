@@ -2,7 +2,8 @@
 layout: page
 title: 计算机科学教育的遗珠一课
 description: 掌握高效利器，让你在计算机科学与编程实践中事半功倍。
-subtitle: IAP 2026
+# subtitle: IAP 2026
+subtitle: "2026"
 nositetitle: true
 ---
 
@@ -20,7 +21,7 @@ nositetitle: true
 Sign up for the IAP 2026 class by filling out this [registration form](https://forms.gle/j2wMzi7qeiZmzEWy9).
 {% endcomment %}
 
-# Schedule
+# Syllabus
 
 {% comment %}
 **Lecture**: [35-225](https://whereis.mit.edu/?go=35), 1:30--2:30pm (_exception_: 3--4pm on Friday 1/16)<br>
@@ -32,7 +33,7 @@ Sign up for the IAP 2026 class by filling out this [registration form](https://f
 {% for lecture in lectures %}
     {% if lecture.phony != true %}
         <li>
-        <strong>{{ lecture.date | date: '%-m/%d/%y' }}</strong>:
+        <strong>{{ lecture.date | date: '%-m/%-d/%y' }}</strong>:
         {% if lecture.ready %}
             <a href="{{ lecture.url }}">{{ lecture.title }}</a>
         {% else %}
@@ -40,6 +41,29 @@ Sign up for the IAP 2026 class by filling out this [registration form](https://f
         {% endif %}
         </li>
     {% endif %}
+{% endfor %}
+</ul>
+
+## Special topics from previous years
+
+The topics we cover vary from year to year. For students who are interested in the complete set of topics we have covered over the years, we highlight topics covered in previous years that we did not cover in 2026.
+
+{% comment %} pop to remove default "posts" collection {% endcomment %}
+{% assign sorted_collections = site.collections | sort: 'label' | pop | reverse %}
+<ul>
+{% for collection in sorted_collections %}
+    {% assign grouped_lectures = site[collection.label] | group_by: 'date' | sort: 'name' %}
+    {% for group in grouped_lectures %}
+        {% assign sorted_lectures = group.items | sort: 'order' %}
+        {% for lecture in sorted_lectures %}
+            {% if lecture.special == true %}
+                <li>
+                    <strong>{{ lecture.date | date: '%-m/%-d/%y' }}</strong>:
+                    <a href="{{ lecture.url }}">{{ lecture.title }}</a>
+                </li>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
 {% endfor %}
 </ul>
 
@@ -51,14 +75,11 @@ from the [previous offering of the course](/2020/), which covers many of the
 same topics.
 {% endcomment %}
 
-你可以在 [YouTube](https://www.youtube.com/playlist?list=PLyzOVJj3bHQunmnnTXrNbZnBaCA-ieK4L) 上观看讲座视频。
-
-还可以在 [OSSU Discord](https://ossu.dev/#community) 社区讨论课程（使用 `#missing-semester-forum` 频道进行课程讨论，就如同使用 [Piazza](https://piazza.com/) 一样；使用 `#missing-semester` 频道与老师和同学交流）。
-
-# 关于课程
+# 基础信息
 
 **讲师阵容**：本课程由 [Anish](https://anish.io/)、[Jon](https://thesquareplanet.com/) 和 [Jose](https://josejg.com/) 联合讲授。<br>
 **有任何疑问**：欢迎通过 [missing-semester@mit.edu](mailto:missing-semester@mit.edu) 邮件咨询我们。
+**讨论区**：可以在 [OSSU Discord](https://ossu.dev/#community) 社区讨论课程（使用 `#missing-semester-forum` 频道进行课程讨论，就如同使用 [Piazza](https://piazza.com/) 一样；使用 `#missing-semester` 频道与老师和同学交流）。
 
 # 走向世界
 
@@ -92,16 +113,17 @@ same topics.
 - [Russian（俄语）](https://missing-semester-rus.github.io/)
 - [Serbian（塞尔维亚语）](https://netboxify.com/missing-semester/)
 - [Spanish（西班牙语）](https://missing-semester-esp.github.io/)
+- [Swedish（瑞典语）](https://itiquette.github.io/den-saknade-terminen/)
 - [Thai（泰语）](https://missing-semester-th.github.io/)
 - [Turkish（土耳其语）](https://missing-semester-tr.github.io/)
 - [Vietnamese（越南语）](https://missing-semester-vn.github.io/)
 
-MIT 官方注：以上为社区译本的外部链接，我们未对其进行审核。<br>
-如果你增添了本课程的翻译，欢迎提交[拉取请求(Pull Request)](https://github.com/missing-semester/missing-semester/pulls)，我们会将其收录到上述列表中！
+> MIT 官方注：<br>
+> 以上为社区译本的外部链接，我们未对其进行审核。<br>
+> 如果你增添了本课程的翻译，欢迎提交[拉取请求(Pull Request)](https://github.com/missing-semester/missing-semester/pulls)，我们会将其收录到上述列表中！
 
-简体中文译者注：如有任何错漏、补充或修订建议，欢迎 [发起议题(Issue)](https://github.com/ztm0929/missing-semester/issues) 或 [提交拉取请求](https://github.com/ztm0929/missing-semester/pulls)。
-
-
+> 简体中文译者注：<br>
+> 如有任何错漏、补充或修订建议，欢迎 [发起议题(Issue)](https://github.com/ztm0929/missing-semester/issues) 或 [提交拉取请求](https://github.com/ztm0929/missing-semester/pulls)。
 
 ## 致谢
 
