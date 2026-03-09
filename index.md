@@ -21,7 +21,7 @@ nositetitle: true
 Sign up for the IAP 2026 class by filling out this [registration form](https://forms.gle/j2wMzi7qeiZmzEWy9).
 {% endcomment %}
 
-# Syllabus
+# 课程安排
 
 {% comment %}
 **Lecture**: [35-225](https://whereis.mit.edu/?go=35), 1:30--2:30pm (_exception_: 3--4pm on Friday 1/16)<br>
@@ -44,9 +44,9 @@ Sign up for the IAP 2026 class by filling out this [registration form](https://f
 {% endfor %}
 </ul>
 
-## Special topics from previous years
+## 往年特别专题
 
-The topics we cover vary from year to year. For students who are interested in the complete set of topics we have covered over the years, we highlight topics covered in previous years that we did not cover in 2026.
+本课程的讲授内容每年都会有所调整。对于希望了解我们历年来所涉及完整主题的同学，我们在此列出 2026 年未包含、但在往年讲授过的一些专题。
 
 {% comment %} pop to remove default "posts" collection {% endcomment %}
 {% assign sorted_collections = site.collections | sort: 'label' | pop | reverse %}
