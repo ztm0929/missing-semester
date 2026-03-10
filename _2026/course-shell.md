@@ -327,7 +327,7 @@ echo "Full log: $LOGFILE"
 我们还没有提供这些练习的标准答案。如果你被某个问题卡住了，欢迎在 [Discord](https://ossu.dev/#community) 的 `#missing-semester-forum` 发帖，或发送邮件告诉我们你已经尝试了什么，我们会尽力帮你。
 这些练习也很适合作为与 LLM 交流时的起始提示，让你以交互方式深入探索。这些练习真正的价值在于「探索答案的过程」，而不只是答案本身。我们鼓励你在做题时顺着分支问题继续深挖，多问「为什么」，而不是只追求最短解法路径。
 
-1. 本课程要求你使用类 Unix 的 Shell，如 Bash 或 ZSH 。若你在 Linux 或 macOS 上，无需额外设置。若你在 Windows 上，请确认你用的不是 `cmd.exe` 或 `PowerShell`；你可以使用 [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/) 或 Linux 虚拟机来获得 Unix 风格的命令行工具。要确认当前 Shell 是否合适，可运行 `echo $SHELL`；若输出类似 `/bin/bash` 或 `/usr/bin/zsh` ，就说明没问题。
+1. 本课程要求你使用类 Unix 的 Shell，如 Bash 或 ZSH 。若你在 Linux 或 macOS 上，无需额外设置。若你在 Windows 上，请确认你用的不是 `cmd.exe` 或 `PowerShell`；你可以使用 [适用于 Linux 的 Windows 子系统（WSL）](https://learn.microsoft.com/zh-cn/windows/wsl/) 或 Linux 虚拟机来获得 Unix 风格的命令行工具。要确认当前 Shell 是否合适，可运行 `echo $SHELL`；若输出类似 `/bin/bash` 或 `/usr/bin/zsh` ，就说明没问题。
 
 2. `ls` 的 `-l` 选项（flag）作用是什么？运行 `ls -l /` 并观察输出。每一行最前面的 10 个字符分别代表什么？（提示：`man ls`）
 

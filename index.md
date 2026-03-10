@@ -120,8 +120,8 @@ same topics.
 
 > MIT 官方注：<br>
 > 以上为社区译本的外部链接，我们未对其进行审核。<br>
-> 如果你增添了本课程的翻译，欢迎提交[拉取请求(Pull Request)](https://github.com/missing-semester/missing-semester/pulls)，我们会将其收录到上述列表中！
-
+> 如果你增添了本课程的翻译，欢迎 [提交拉取请求(Pull Request)](https://github.com/missing-semester/missing-semester/pulls)，我们会将其收录到上述列表中！
+> <br><br>
 > 简体中文译者注：<br>
 > 如有任何错漏、补充或修订建议，欢迎 [发起议题(Issue)](https://github.com/ztm0929/missing-semester/issues) 或 [提交拉取请求](https://github.com/ztm0929/missing-semester/pulls)。
 
