@@ -1,8 +1,7 @@
 ---
 layout: lecture
-title: "Command-line Environment"
-description: >
-  Learn how command-line programs work, including input/output streams, environment variables, and remote machines with SSH.
+title: "命令行环境"
+description: 了解命令行程序如何运作，涵盖输入输出流、环境变量，以及借助 SSH 操作远程机器。
 thumbnail: /static/assets/thumbnails/2026/lec2.png
 date: 2026-01-13
 ready: true
@@ -11,24 +10,27 @@ video:
   id: ccBGsPedE9Q
 ---
 
-As we covered in the previous lecture, most shells are not a mere launcher to start up other programs,
-but in practice they provide an entire programming language full of common patterns and abstractions.
-However, unlike the majority of programming languages, in shell scripting everything is designed around running programs and getting them to communicate with each other simply and efficiently.
+正如我们在上一讲中提到的，大多数 Shell 并不只是其他程序的「快速启动器」；在实际使用中，它本身就构成了一门完整的编程语言，拥有大量常见的模式与抽象。
 
-In particular, shell scripting is tightly bound by _conventions_. For a command line interface (CLI) program to play nicely within the broader shell environment there are some common patterns that it needs to follow.
-We will now cover many of the concepts required to understand how command line programs work as well as ubiquitous conventions on how to use and configure them.
+不过，与大多数编程语言不同，Shell 脚本的设计核心是运行各种程序，并让它们能够以简单而高效的方式彼此协作。
 
-# The Command Line Interface
+> 译者注：<br>
+> 这里并不是说其他编程语言不追求效率，而是它们的设计重点不同。像 Python、Java 或 C 等通用编程语言通常用于在一个程序内部实现算法、数据结构和复杂逻辑；而 Shell 的主要作用是调用和组合已有程序，并通过标准输入输出等机制让它们协同工作。
 
-Writing a function in most programming languages looks something like:
+尤其需要注意的是，**Shell 脚本在很大程度上依赖各种约定（conventions）**。如果一个命令行界面（CLI）程序想在更广泛的 Shell 环境中良好协作，就需要遵循一些常见的模式。
+
+接下来我们将介绍理解命令行程序所需的许多基础概念，同时也会讲解一些广泛使用的约定，说明人们通常是如何使用和配置这些程序的。
+
+# 命令行界面
+
+在大多数编程语言中，定义一个函数通常会像这样：
 
 ```
 def add(x: int, y: int) -> int:
     return x + y
 ```
 
-Here we can explicitly see the inputs and the outputs of the program.
-In contrast, shell scripts can look quite different at first glance.
+在这里，我们可以明确看到程序的输入与输出。相比之下，Shell 脚本乍看之下往往很不一样。
 
 ```shell
 #!/usr/bin/env bash
@@ -46,13 +48,13 @@ else
 fi
 ```
 
-To properly understand what is going in scripts like this one we first need to introduce a few concepts that appear often when shell programs communicate with each other or with the shell environment:
+要真正理解这类脚本在做什么，我们首先需要引入几个在 Shell 程序彼此通信、或与 Shell 环境交互时反复出现的概念：
 
-- Arguments
-- Streams
-- Environment variables
-- Return codes
-- Signals
+- 参数（Arguments）
+- 流（Streams）
+- 环境变量（Environment variables）
+- 返回码（Return codes）
+- 信号（Signals）
 
 ## Arguments
 
