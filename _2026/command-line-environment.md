@@ -56,31 +56,27 @@ fi
 - 返回码（Return codes）
 - 信号（Signals）
 
-## Arguments
+## 参数（Arguments）
 
-Shell programs receive a list of arguments when they are executed.
-Arguments are plain strings in shell, and it is up to the program how to interpret them.
-For instance when we do `ls -l folder/`, we are executing the program `/bin/ls` with arguments `['-l', 'folder/']`.
+Shell 程序在执行时会接收一个参数列表。在 Shell 中，参数本质上是纯字符串，程序需要自行决定如何解释这些参数。例如，当我们执行 `ls -l folder/` 时，实际上是以 `['-l', 'folder/']` 作为参数来调用 `/bin/ls` 程序。
 
-From within a shell script we access these via special shell syntax.
-To access the first argument we access the variable `$1`, second argument `$2` and so on and so forth until `$9`. To access all arguments as a list we use `$@` and to retrieve the number of arguments `$#`. Additionally we can also access the name of the program with `$0`.
+从 Shell 脚本内部，我们可以通过特殊的语法来访问这些参数。<br>
+第一个参数通过 `$1` 访问，第二个参数通过 `$2` 访问，依此类推至 `$9`。<br>
+要获取所有参数的列表，可以使用 `$@` ；要获取参数的个数，可以使用 `$#` 。<br>
+此外，还可以通过 `$0` 获取程序的名称。
 
-For most programs the arguments will consist of a mixture of _flags_ and regular strings.
-Flags can be identified because they are preceded by a dash (`-`) or double-dash (`--`).
-Flags are usually optional and their role is to modify the behavior of the program.
-For example `ls -l` changes how `ls` formats its output.
+大多数程序的参数由**标志（flag）**和常规字符串混合组成。标志可以通过在其前面加上单破折号（ `-` ）或双破折号（ `--` ）来识别。标志通常是可选的，其作用是改变程序的行为。例如 `ls -l` 会改变 `ls` 的输出格式。
 
-You will see double dash flags with long names like `--all`, and single dash flags like `-a`, which are most often followed by a single letter.
-The same option might be specified in both formats, `ls -a` and `ls --all` are equivalent.
-Single dash flags are often grouped, so `ls -l -a` and `ls -la` are also equivalent.
-The order of flags usually doesn't matter either, `ls -la` and `ls -al` produce the same result.
-Some flags are quite prevalent and as you get more familiar with the shell environment you'll intuitively reach for them, for example (`--help`, `--verbose`, `--version`).
+长样式的标志通常采用双破折号形式，如 `--all` ；短样式的标志采用单破折号形式，如 `-a`，后面通常跟一个字母。<br>
+同一选项可以用两种格式指定，即 `ls -a` 和 `ls --all` 是等价的。<br>
+短标志可以组合在一起，所以 `ls -l -a` 和 `ls -la` 也是等价的。标志的顺序通常无关紧要，`ls -la` 和 `ls -al` 会产生相同的结果。<br>
+某些标志非常常用，随着你对 Shell 环境的熟悉，你会本能地在某些场景使用它们，比如 `--help`、`--verbose` 和 `--version`
 
-> Flags are a first good example of shell conventions. The shell language does not require that our program uses `-` or `--` in this particular way.
-Nothing prevents us from writing a program with syntax `myprogram +myoption myfile`, but it would lead to confusion since the expectation is that we use dashes.
-> In practice, most programming languages provide CLI flag parsing libraries (e.g. `argparse` in python to parse arguments with the dash syntax).
+> 标志是 Shell 约定的一个很好例子。Shell 语言本身并不强制要求我们的程序必须以这种特定方式（使用 `-` 或 `--` ）来处理选项。<br>
+> 虽然技术上没有什么阻止我们编写使用 `myprogram +myoption myfile` 这样语法的程序，但这样做会造成困惑，因为用户普遍期望我们使用破折号这样的约定。<br>
+> 实际上，大多数编程语言都提供了 CLI 标志解析库（例如 Python 中的 `argparse` 用于按照这种破折号语法来解析参数）。
 
-Another common convention in CLI programs is for programs to accept a variable number of arguments of the same type. When given arguments in this way the command performs the same operation on each one of them.
+CLI 程序中的另一个常见约定是程序接受可变数量的相同类型参数。以这种方式提供参数时，程序会对每个参数执行相同的操作。
 
 ```shell
 mkdir src
@@ -89,10 +85,9 @@ mkdir docs
 mkdir src docs
 ```
 
-This syntax sugar might seem unnecessary at first, but it becomes really powerful when combined with _globbing_.
-Globbing or globs are special patterns that the shell will expand before calling the program.
+这种语法糖起初看起来可能没必要，但一旦与**模式扩展（globbing）**结合使用，就变得极其强大。模式扩展是指 Shell 在调用程序之前会展开的特殊模式。
 
-Say we wanted to delete all .py files in the current folder nonrecursively. From what we learned in the previous lecture we could achieve this by running
+假设我们想删除当前文件夹中的所有 `.py` 文件（非递归）。根据之前讲座学到的知识，我们可以这样做：
 
 ```shell
 for file in $(ls | grep -P '\.py$'); do
@@ -100,33 +95,30 @@ for file in $(ls | grep -P '\.py$'); do
 done
 ```
 
-But we can replace that with just `rm *.py`!
+但我们完全可以简化为：`rm *.py` ！
 
-When we type `rm *.py` into the terminal, the shell will not call the `/bin/rm` program with arguments `['*.py']`.
-Instead, the shell will search for files in the current folder matching the pattern `*.py` where `*` can match any string of zero or more characters of any type.
-So if our folder has `main.py` and `utils.py` then the `rm` program will receive arguments `['main.py', 'utils.py']`.
+当我们在终端输入 `rm *.py` 时，Shell 不会以 ``['*.py']`` 作为参数调用 `rm` 程序。相反，Shell 会在当前文件夹中搜索与模式 `*.py` 匹配的文件，其中 `*` 可以匹配任意数量（包括零个）的任意字符。如果当前文件夹中有 `main.py` 和 `utils.py`，那么 `rm` 程序最终会接收到参数 `['main.py', 'utils.py']`。
 
-The most common globs you will find are wildcards `*` (zero or more of anything), `?` (exactly one of anything) and curly braces.
-Curly braces `{}` expand a comma-separated list of patterns into multiple arguments.
+最常见的模式扩展包括：通配符 `*`（匹配零个或多个任意字符）、`?`（匹配任意单个字符）和大括号。大括号 `{}` 可以将逗号分隔的模式列表展开成多个参数。
 
-In practice, globs are best understood with motivating examples.
+在实际应用中，通过具体的例子最容易理解模式扩展的用法。
 
 ```shell
 touch folder/{a,b,c}.py
-# Will expand to
+# 将会扩展为
 touch folder/a.py folder/b.py folder/c.py
 
 convert image.{png,jpg}
-# Will expand to
+# 将会扩展为
 convert image.png image.jpg
 
 cp /path/to/project/{setup,build,deploy}.sh /newpath
-# Will expand to
+# 将会扩展为
 cp /path/to/project/setup.sh /path/to/project/build.sh /path/to/project/deploy.sh /newpath
 
-# Globbing techniques can also be combined
+# 多种模式扩展还可以互相组合
 mv *{.py,.sh} folder
-# Will move all *.py and *.sh files
+# 将会移除所有 *.py 和 *.sh 文件
 ```
 
 > Some shells (e.g. zsh) support even more advanced forms of globbing such as `**` that will expand to include recursive paths. So `rm **/*.py` will delete all .py files recursively.
