@@ -1,8 +1,7 @@
 ---
 layout: lecture
-title: "Beyond the Code"
-description: >
-  Learn about essential soft skills including documentation, open-source community norms, and AI etiquette.
+title: "代码之外"
+description: 了解开发者不可或缺的软技能，包括文档编写、开源社区的协作规范，以及与 AI 互动的基本礼仪。
 thumbnail: /static/assets/thumbnails/2026/lec8.png
 date: 2026-01-22
 ready: true
@@ -11,112 +10,41 @@ video:
   id: 2DOEATfXT8k
 ---
 
-Being a good software engineer isn't just about writing code that
-works. It's about writing code that others (including future you) can
-understand, maintain, and build upon. It's about communicating
-clearly, contributing thoughtfully, and being a good citizen in the
-ecosystems you participate in—whether open source or proprietary.
+成为一名优秀的软件工程师，不只是写出能运行的代码。更重要的是写出别人（包括未来的自己）能理解、能维护、并能继续构建的代码。这也意味着要清晰表达、审慎协作，并在你所参与的生态中——无论开源还是闭源——做一个负责任的公民。
 
-# One-way communication
+# 单向沟通
 
-Much of software engineering involves writing for people who lack your
-current context: teammates who join later, maintainers who inherit
-your code, or yourself in six months when you've forgotten why you
-made a particular choice. A key piece of advice for all this kind of
-writing is that your goal is to capture and convey the *why*, not just
-the *what*. The what tends to be self-explanatory, while the *why* is
-hard-earned knowledge that is easily lost to time.
+软件工程中有大量工作，本质上是在为缺少当前上下文的人写作：后来加入的队友、接手你代码的维护者，或是六个月后已经忘了当初决策缘由的你自己。对于此类写作，一个关键建议是：**你的目标应是记录并传达「为什么」，而不只是「做了什么」。**「做了什么」往往一眼可见；真正来之不易、也最容易被时间冲淡的，是「为什么」。
 
-Perhaps the most common form of engineer-to-engineer communication
-(apart from the code itself) is code comments. I've personally found
-that a lot of code comments are useless. But they don't have to be! Good
-comments explain things that the code itself cannot: *why* something is
-done a particular way, not *how* it works (which is what the code
-shows). They can save hours of confusion, while bad comments add noise
-or, worse, mislead.
+工程师之间最常见的沟通形式（除代码本身外）大概就是注释。我个人一直觉得，很多注释并无价值。但注释完全本可以很有用！好的注释解释的是代码本身无法表达的内容：**为什么要这样做**，而不是它如何运作（代码已写得很清楚）。好注释能省下数小时困惑；坏注释只会制造噪音，甚至误导读者。
 
-Types of comments that are nearly always worthwhile:
+几乎总是值得写的注释类型包括：
 
-- **TODOs**: Mark incomplete or unpolished code, but leave enough
-  context for someone else to understand what's outstanding and why it
-  was deferred. "TODO: optimize" is useless; "TODO: this O(n²) loop is
-  fine for `n<100`, but will need indexing if we scale" is actionable.
-- **References**: Link to external sources when code implements an
-  algorithm from a paper, adapts code from elsewhere, or encodes
-  behaviour specified in documentation. Use permalinks. Note any
-  divergences from the reference.
-- **Correctness arguments**: Explain *why* non-trivial code produces
-  correct results. The code shows the steps; a comment explains why
-  those steps work.
-- **Hard-learned lessons**: If you spent 30+ minutes debugging something
-  and the fix is a non-obvious incantation, document it. Your past self
-  didn't realize it was needed; future readers won't either.
-- **Rationale for constants**: Magic numbers deserve explanation. Why
-  1492? Why 16 bits? Was it chosen randomly, derived from testing, or
-  required for correctness? Even "chosen arbitrarily" is useful
-  information.
-- **Load-bearing choices**: If correctness depends on a
-  seemingly-innocent implementation detail (e.g., "must be a BTreeSet
-  because iteration order matters below"), call it out explicitly.
-- **"Why not"s**: When you deliberately avoid the obvious approach,
-  explain why. Otherwise someone will "fix" it later and break things.
+- **TODO**：标记尚未完成或尚不完善的部分，但要留下足够上下文，让后来者知道还有什么没做、为何暂缓。`TODO: optimize` 是无效信息；`TODO: 这个 O(n²) 循环在 n<100 时可接受，但规模扩大后需要索引` 才具可执行性。
+- **参考来源**：当代码实现了论文算法、改写了外部实现，或编码了文档规定的行为时，请附上外部来源链接（尽量用永久链接），并注明与原参考的差异。
+- **正确性说明**：解释为什么一段非平凡代码能得到正确结果。代码展示步骤，注释补上「为何成立」。
+- **踩坑经验**：如果你花了 30 分钟以上才排查出问题，而修复依赖某条不明显的「咒语」，请把它写下来。过去的你都没意识到它必要，未来读者更不会。
+- **常量依据**：魔法数字都应有解释。为什么是 1492？为什么是 16 位？是随手选的、测试推导的，还是正确性要求？哪怕「随机选的」，也是有价值的信息。
+- **关键实现选择**：若正确性依赖某个看似无害的实现细节（如「这里必须用 BTreeSet，因为后续依赖迭代顺序」），务必明确写出。
+- **「为何不用」**：当你刻意避开显而易见的方案时，要解释原因。否则后人很可能「顺手修正」，结果反而引入问题。
 
-READMEs (you have one, right?) are also a common first touch-point with
-other developers. A good one answers four questions immediately: What
-does this do? Why should I care? How do I use it? How do I install it?
-In that order. Structure it like a funnel: a one-liner and maybe a
-visual demo at the top so someone can decide in seconds if this solves
-their problem, then progressively add depth. Show usage before
-installation — people want to see what they're getting before committing
-to setup steps.
+README（你有吧？）也是其他开发者接触项目的常见第一入口。好的 README 应立刻回答四个问题：它做什么？我为什么关心？怎么用？怎么安装？而且按这个顺序组织。结构应像漏斗：顶部先给一句话概述，最好再加一个可视化演示，让人几秒内判断这是否解决自己的问题；随后再逐层展开细节。先讲用法，再讲安装——人们总想先知道值不值得，再决定是否投入配置成本。
 
-Commit messages are another kind of "writing for others" that is often
-neglected. They are often written as "fixed blah" or "added foo", and
-while that may be sufficient in some cases, it's easy to forget that
-they form the historical record of *why* the codebase evolved the way it
-did. When someone (including you!) runs `git blame` trying to understand
-a confusing change, good commit messages should give them answers.
+提交信息（commit message）同样是常被忽视的「为他人写作」。它们常写成「fixed blah」或「added foo」；某些场景下也许够用，但别忘了：**提交历史是代码库为何演化至此的档案**。当有人（包括你自己）运行 `git blame` 去理解一处令人困惑的改动时，好的提交信息应能给出答案。
 
-In general, the body should answer:
-- What problem forced this change?
-- What alternatives did you consider?
-- What are the trade-offs or implications?
-- What might be surprising about this approach?
+一般来说，提交正文应回答：
+- 什么问题迫使你做这次改动？
+- 你考虑过哪些替代方案？
+- 有哪些权衡与影响？
+- 这个方案里有什么可能让人意外之处？
 
-> Obviously you should scale detail with complexity. A one-line typo fix
-> needs only a subject. A subtle race condition fix that took hours to
-> debug deserves paragraphs explaining the problem and solution.
+> 当然，细节应与复杂度匹配。修一个单行拼写错误，只需一行标题；而一个耗费数小时才定位的微妙竞态修复，则值得用数段文字解释问题与解法。
 
-For complex changes, it can be useful to follow a Problem → Solution →
-Implications structure: Start with the forcing function or limitation,
-then explain what changed and the key design decisions, and then list
-noteworthy consequences (positive and negative). That last part is
-particularly important; real engineering involves balancing concerns,
-and documenting that a trade-off was intentional prevents future
-developers from thinking you missed the problem.
+对于复杂改动，采用「问题 → 方案 → 影响」的结构通常很有效：先交代触发变更的约束或痛点，再说明改了什么以及关键设计决策，最后列出值得关注的后果（正反两面都要写）。最后这部分尤为重要：真实工程总是在权衡中推进。把「这是有意取舍」写清楚，能避免后来者误以为你忽略了问题。
 
-LLMs _can_ be helpful in writing commit messages. However, if you simply
-point one at your change and ask it to write the commit message for the
-change, the LLM will only have access to the _what_, not the _why_. And
-the resulting commit message will thus be mostly descriptive (the
-opposite of what we want!). If you used an LLM to help you make the
-change in the first place, asking the LLM to write the commit in that
-same session can be a much better option since your conversation with
-the LLM is inherently a rich source of context about the change!
-Otherwise, or in addition, a useful trick is to specifically tell the
-LLM you'd like a commit message focused on the "why" (and other nuances
-from the notes above), and then _tell it to query you for missing
-context_. Essentially, you're acting like a MCP "tool" for the coding
-agent that it can use to "read" context.
+**LLM 的确可以帮助撰写提交信息。**但如果你只是把改动丢给它，让它直接生成提交说明，**它通常只看得到「做了什么」，看不到「为什么」**。结果往往是偏描述性的提交信息——这恰恰背离我们的目标。如果你本来就在同一会话中借助 LLM 完成这次改动，再让它写提交信息通常会好得多，因为你们的对话天然包含丰富上下文。否则（或除此之外），一个实用技巧是：明确告诉 LLM 你希望提交信息聚焦「为什么」（以及上述细节），并**要求它主动向你追问缺失上下文**。换言之，你是在把自己当作它可调用的「上下文工具（MCP）」。
 
-As your changes get more complex, make sure to also break up commits
-logically (`git add -p` is your friend). Each commit should represent
-one coherent change that could be understood and reviewed independently.
-Don't mix refactoring with new features or combine unrelated bug fixes,
-as this muddies the story for which changes fixed what problem, and will
-almost certainly slow down the eventual review of your changes. It also
-gives you superpowers through `git bisect`, but that's a story for
-another time.
+随着改动复杂度上升，也要把提交按逻辑拆分（`git add -p` 很好用）。每个提交都应代表一个可独立理解、可独立评审的完整改动。不要把重构和新功能混在一起，也别把无关 bug 修复塞进同一提交——这会模糊「哪次改动修了什么问题」的叙事，并几乎必然拖慢评审节奏。它还会让你在 `git bisect` 时如有神助，不过那是另一个故事了。
 
 > One note as you start being more diligent about technical writing, and
 > using it more extensively, make sure you respect the reader. It's easy
